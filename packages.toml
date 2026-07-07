@@ -21,6 +21,8 @@ packages = [
     "pacman-contrib",
     "fastfetch",
     "rate-mirrors",
+    "btop",
+    "nvtop",
 ]
 
 [arch.yay]

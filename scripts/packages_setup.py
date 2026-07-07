@@ -72,62 +72,34 @@ VULKAN_DRIVERS: dict[str, list[str]] = {
 }
 
 
-def pacman_install_one(pkg: str) -> bool:
-    result = subprocess.run(
-        ["sudo", "pacman", "-S", "--noconfirm", "--needed", pkg],
-        capture_output=True, text=True,
-    )
-    if result.returncode == 0:
-        return True
-    if "provider" in result.stderr.lower() or "provider" in result.stdout.lower():
-        warn(f"provider selection required for '{pkg}' — pre-installing vulkan driver")
-        gpu = detect_gpu_vendor()
-        if gpu:
-            for dep in VULKAN_DRIVERS.get(gpu, []):
-                subprocess.run(["sudo", "pacman", "-S", "--noconfirm", "--needed", dep],
-                               capture_output=True)
-        result2 = subprocess.run(
-            ["sudo", "pacman", "-S", "--noconfirm", "--needed", pkg],
-            capture_output=True, text=True,
-        )
-        return result2.returncode == 0
-    warn(f"failed to install '{pkg}': {result.stderr.strip() or result.stdout.strip()}")
-    return False
-
-
 def install_pacman(packages: list[str]) -> None:
-    missing = [p for p in packages]
-    if not missing:
+    if not packages:
         return
-    info(f"installing {len(missing)} pacman packages (one at a time)")
-    failed = []
-    for pkg in missing:
-        if pacman_install_one(pkg):
-            info(f"  ✓ {pkg}")
-        else:
-            warn(f"  ✗ {pkg}")
-            failed.append(pkg)
-    if failed:
-        warn(f"failed to install: {' '.join(failed)}")
+    info(f"installing {len(packages)} pacman packages")
+    # Pre-install vulkan driver to avoid provider selection prompt on bulk install
+    gpu = detect_gpu_vendor()
+    if gpu:
+        for dep in VULKAN_DRIVERS.get(gpu, []):
+            subprocess.run(["sudo", "pacman", "-S", "--noconfirm", "--needed", dep],
+                           capture_output=True)
+    run(["sudo", "pacman", "-S", "--noconfirm", "--needed", *packages])
 
 
 def install_yay(packages: list[str]) -> None:
+    if not packages:
+        return
     if not is_installed("yay"):
         warn("yay not found — run bootstrap.sh first")
         return
-    missing = [p for p in packages]
-    if not missing:
-        return
-    info(f"installing {len(missing)} AUR packages via yay")
-    run(["yay", "-S", "--noconfirm", "--needed", *missing])
+    info(f"installing {len(packages)} AUR packages via yay")
+    run(["yay", "-S", "--noconfirm", "--needed", *packages])
 
 
 def install_apt(packages: list[str]) -> None:
-    missing = [p for p in packages]
-    if not missing:
+    if not packages:
         return
-    info(f"installing {len(missing)} apt packages")
-    run(["sudo", "apt-get", "install", "-y", *missing])
+    info(f"installing {len(packages)} apt packages")
+    run(["sudo", "apt-get", "install", "-y", *packages])
 
 
 MANAGERS = {
