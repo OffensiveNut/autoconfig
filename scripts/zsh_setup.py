@@ -8,10 +8,10 @@ Zsh Environment Setup — Layer 2 Component Engine.
 
 Installs:
   - Nerd Fonts (MesloLGS, JetBrainsMono) with FontAwesome icons
-  - Atuin (shell history)
-  - Zoxide (smarter cd)
-  - Eza (modern ls)
-  - Ccat (cat with syntax highlighting)
+  - Atuin (shell history) — pacman > curl
+  - Zoxide (smarter cd) — pacman > cargo/curl
+  - Eza (modern ls) — pacman > repo > cargo
+  - Bat (cat with syntax highlighting) — replaces ccat
   - Advcpmv (cp/mv with progress bar)
   - Zsh plugins (syntax-highlighting, autosuggestions, powerlevel10k)
   - Sets zsh as default login shell
@@ -101,19 +101,23 @@ def install_atuin() -> None:
     if shutil.which("atuin"):
         ok("atuin already installed")
         return
-    run(
-        [
-            "curl",
-            "--proto",
-            "=https",
-            "--tlsv1.2",
-            "-LsSf",
-            "https://setup.atuin.sh",
-            "-o",
-            "/tmp/atuin.sh",
-        ]
-    )
-    run(["sh", "/tmp/atuin.sh"])
+    mgr = detect_pkg_manager()
+    if mgr == "pacman":
+        run(pkg_install("atuin"))
+    else:
+        run(
+            [
+                "curl",
+                "--proto",
+                "=https",
+                "--tlsv1.2",
+                "-LsSf",
+                "https://setup.atuin.sh",
+                "-o",
+                "/tmp/atuin.sh",
+            ]
+        )
+        run(["sh", "/tmp/atuin.sh"])
     ok("atuin installed")
 
 
@@ -121,7 +125,10 @@ def install_zoxide() -> None:
     if shutil.which("zoxide"):
         ok("zoxide already installed")
         return
-    if shutil.which("cargo"):
+    mgr = detect_pkg_manager()
+    if mgr == "pacman":
+        run(pkg_install("zoxide"))
+    elif shutil.which("cargo"):
         run(["cargo", "install", "zoxide", "--locked"])
     else:
         run(
@@ -188,32 +195,45 @@ def install_eza() -> None:
     ok("eza installed")
 
 
-def install_ccat() -> None:
-    if shutil.which("ccat") and shutil.which("cless"):
-        ok("ccat already installed")
+def install_bat() -> None:
+    if shutil.which("bat") and shutil.which("ccat"):
+        ok("bat already installed")
         return
-    arch = subprocess.run(
-        ["uname", "-m"], capture_output=True, text=True
-    ).stdout.strip()
-    base = "https://github.com/owenthereal/ccat/releases/latest/download"
-    suffix = "linux-amd64" if arch == "x86_64" else f"linux-{arch}"
-    tmp = Path("/tmp/ccat")
-    tmp.mkdir(parents=True, exist_ok=True)
-    run(["curl", "-fsSL", "-o", str(tmp / "ccat.tgz"), f"{base}/ccat-{suffix}.tgz"])
-    run(["tar", "-xzf", str(tmp / "ccat.tgz"), "-C", str(tmp)])
-    extracted = list(tmp.iterdir())
-    extracted_dir = None
-    for p in extracted:
-        if p.is_dir() and p.name.startswith("ccat-"):
-            extracted_dir = p
-            break
-    if extracted_dir is None:
-        extracted_dir = tmp
-    for binary in ("ccat", "cless"):
-        src = extracted_dir / binary
+    mgr = detect_pkg_manager()
+    if mgr == "pacman":
+        run(pkg_install("bat"))
+    elif mgr == "apt-get":
+        run(pkg_install("bat"))
+    elif shutil.which("cargo"):
+        run(["cargo", "install", "bat", "--locked"])
+    else:
+        arch = subprocess.run(
+            ["uname", "-m"], capture_output=True, text=True
+        ).stdout.strip()
+        suffix = "x86_64-unknown-linux-gnu" if arch == "x86_64" else f"{arch}-unknown-linux-gnu"
+        url = f"https://github.com/sharkdp/bat/releases/latest/download/bat-{suffix}.tar.gz"
+        tmp = Path("/tmp/bat")
+        tmp.mkdir(parents=True, exist_ok=True)
+        run(["curl", "-fsSL", "-o", str(tmp / "bat.tgz"), url])
+        run(["tar", "-xzf", str(tmp / "bat.tgz"), "-C", str(tmp)])
+        extracted = list(tmp.iterdir())
+        extracted_dir = None
+        for p in extracted:
+            if p.is_dir() and p.name.startswith("bat-"):
+                extracted_dir = p
+                break
+        if extracted_dir is None:
+            extracted_dir = tmp
+        src = extracted_dir / "bat"
         if src.exists():
-            run(["sudo", "cp", str(src), f"/usr/local/bin/{binary}"])
-    ok("ccat installed")
+            run(["sudo", "cp", str(src), "/usr/local/bin/bat"])
+
+    # Symlink ccat → bat so existing aliases still work
+    if not shutil.which("ccat"):
+        bat_path = shutil.which("bat")
+        if bat_path:
+            run(["sudo", "ln", "-sf", bat_path, "/usr/local/bin/ccat"])
+    ok("bat installed")
 
 
 def install_advcpmv() -> None:
@@ -299,7 +319,7 @@ def main() -> None:
         ("Atuin (shell history)", install_atuin),
         ("Zoxide (smart cd)", install_zoxide),
         ("Eza (modern ls)", install_eza),
-        ("Ccat (highlighted cat/less)", install_ccat),
+        ("Bat (highlighted cat) + ccat symlink", install_bat),
         ("Advcpmv (cp/mv progress)", install_advcpmv),
         ("Zsh package", install_zsh_pkg),
         ("Zsh plugins", apply_zsh_plugins),

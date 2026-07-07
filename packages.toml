@@ -13,6 +13,10 @@ packages = [
     "btop",
     "zed",
     "lutris",
+    "distrobox",
+    "bat",
+    "mpv",
+    "obsidian",
 ]
 
 [arch.yay]
@@ -21,7 +25,7 @@ packages = [
     "librewolf-bin",
     "protonup-qt",
     "pear-desktop-bin",
-    "ccat",
+    "zoom",
 ]
 
 [debian.apt]
@@ -35,4 +39,5 @@ packages = [
     "btop",
     "zed",
     "lutris",
+    "bat",
 ]
