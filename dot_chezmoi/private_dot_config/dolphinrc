@@ -1,0 +1,23 @@
+MenuBar=Disabled
+
+[ExtractDialog]
+1536x864 screen: Height=480
+1536x864 screen: Width=1024
+DirHistory[$e]=/mnt/win10/Users/Rasya/Games/,$HOME/Games/cp2077/,$HOME/Documents/kicad/,$HOME/Documents/depthEstimation/nuwa/,$HOME/Games/Dead-Cells/,$HOME/Downloads/wiiu/
+
+[General]
+Version=202
+ViewPropsTimestamp=2024,12,22,19,33,9.519
+
+[KFileDialog Settings]
+Places Icons Auto-resize=false
+Places Icons Static Size=22
+
+[MainWindow]
+MenuBar=Disabled
+
+[PreviewSettings]
+Plugins=appimagethumbnail,audiothumbnail,glycin-heif,comicbookthumbnail,cursorthumbnail,djvuthumbnail,ebookthumbnail,exrthumbnail,directorythumbnail,fontthumbnail,imagethumbnail,glycin-image-rs,jpegthumbnail,glycin-jxl,kraorathumbnail,windowsexethumbnail,windowsimagethumbnail,mltpreview,opendocumentthumbnail,glycin-svg,svgthumbnail,ffmpegthumbs,aseprite
+
+[Search]
+What=Content

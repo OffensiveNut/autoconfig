@@ -12,7 +12,7 @@ packages = [
     "kitty",
     "btop",
     "zed",
-    "lutris",
+    "heroic",
     "distrobox",
     "bat",
     "mpv",
@@ -23,6 +23,9 @@ packages = [
     "rate-mirrors",
     "btop",
     "nvtop",
+    "ffmpegthumbs",
+    "glycin",
+    "mangohud",
 ]
 
 [arch.yay]
