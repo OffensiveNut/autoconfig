@@ -124,7 +124,7 @@ def main() -> None:
         scripts_to_run = discover_scripts()
 
     if scripts_to_run:
-        with StepRunner() as steps:
+        with StepRunner(total=len(scripts_to_run)) as steps:
             for script in scripts_to_run:
                 label = script.stem.replace("_", " ").title()
                 steps.run_script(label, script)

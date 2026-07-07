@@ -225,7 +225,7 @@ def main() -> None:
         ("Set zsh as default shell", set_default_shell),
     ]
 
-    with StepRunner() as runner:
+    with StepRunner(total=len(steps)) as runner:
         for label, func in steps:
             runner.run(label, func)
 
