@@ -196,8 +196,10 @@ def apply_zsh_plugins() -> None:
             cloned += 1
 
     p10k = plugin_dir / "powerlevel10k"
-    if (p10k / "Makefile").exists():
+    stamp = p10k / ".pkg_done"
+    if (p10k / "Makefile").exists() and not stamp.exists():
         run(["make", "-C", str(p10k), "pkg"])
+        stamp.touch()
     info(f"plugins: {cloned} cloned, {len(plugins) - cloned} cached")
 
 
