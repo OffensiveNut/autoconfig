@@ -55,8 +55,10 @@ class StepRunner:
             TaskProgressColumn(),
             TimeRemainingColumn(),
         ]
-        progress_kw = dict(console=console) if _IS_TTY else dict(console=console, disable=True)
-        self.progress = Progress(*columns, **progress_kw)
+        if _IS_TTY:
+            self.progress = Progress(*columns, console=console)
+        else:
+            self.progress = Progress(*columns, console=console, disable=True)
         self._task = self.progress.add_task("", total=total) if total else None
         self._live: Live | None = None
 

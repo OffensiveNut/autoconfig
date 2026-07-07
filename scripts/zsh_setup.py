@@ -201,6 +201,18 @@ def apply_zsh_plugins() -> None:
     info(f"plugins: {cloned} cloned, {len(plugins) - cloned} cached")
 
 
+def install_zsh_pkg() -> None:
+    if shutil.which("zsh"):
+        ok("zsh already installed")
+        return
+    cmd = pkg_install("zsh")
+    if cmd:
+        run(cmd)
+        ok("zsh installed")
+    else:
+        warn("no package manager found — install zsh manually")
+
+
 def set_default_shell() -> None:
     zsh_path = shutil.which("zsh")
     if not zsh_path:
@@ -221,6 +233,7 @@ def main() -> None:
         ("Eza (modern ls)", install_eza),
         ("Ccat (highlighted cat/less)", install_ccat),
         ("Advcpmv (cp/mv progress)", install_advcpmv),
+        ("Zsh package", install_zsh_pkg),
         ("Zsh plugins", apply_zsh_plugins),
         ("Set zsh as default shell", set_default_shell),
     ]
