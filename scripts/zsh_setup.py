@@ -144,10 +144,6 @@ def install_eza() -> None:
 def install_ccat() -> None:
     if is_installed("ccat") and is_installed("cless"):
         return
-    mgr = detect_pkg_manager()
-    if mgr == "pacman":
-        run(pkg_install("ccat"))
-        return
     arch = subprocess.run(["uname", "-m"], capture_output=True, text=True).stdout.strip()
     base = "https://github.com/owenthereal/ccat/releases/latest/download"
     suffix = "linux-amd64" if arch == "x86_64" else f"linux-{arch}"

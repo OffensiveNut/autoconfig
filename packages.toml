@@ -21,6 +21,7 @@ packages = [
     "librewolf-bin",
     "protonup-qt",
     "pear-desktop-bin",
+    "ccat",
 ]
 
 [debian.apt]
