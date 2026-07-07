@@ -79,3 +79,18 @@ alias cd="z"
 . "$HOME/.atuin/bin/env"
 
 eval "$(atuin init zsh)"
+
+# Aliases
+alias ls="eza '--git' '--group' '--group-directories-first' '--time-style=long-iso' '--color-scale=all' '--icons' '--hyperlink'"
+alias l="eza --git-ignore '--git' '--group' '--group-directories-first' '--time-style=long-iso' '--color-scale=all' '--icons' '--hyperlink'"
+alias ll="eza --all --header --long '--git' '--group' '--group-directories-first' '--time-style=long-iso' '--color-scale=all' '--icons' '--hyperlink'"
+alias llm="eza --all --header --long --sort=modified '--git' '--group' '--group-directories-first' '--time-style=long-iso' '--color-scale=all' '--icons' '--hyperlink'"
+alias la="eza --hyperlink --icons -lbhHigUmuSa"
+alias lx="eza --hyperlink --icons -lbhHigUmuSa@"
+alias lt="eza --tree '--git' '--group' '--group-directories-first' '--time-style=long-iso' '--color-scale=all' '--icons' '--hyperlink'"
+alias tree="eza --tree '--git' '--group' '--group-directories-first' '--time-style=long-iso' '--color-scale=all' '--icons' '--hyperlink'"
+alias less="cless"
+alias cat="ccat"
+alias cp="/usr/local/bin/advcp -g"
+alias mv="/usr/local/bin/advmv -g"
+alias rm="rm -v"
