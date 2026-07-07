@@ -78,10 +78,6 @@ def discover_scripts() -> list[Path]:
     return sorted(scripts_dir.glob("*.py"))
 
 
-def run_script(script: Path) -> None:
-    subprocess.run(["uv", "run", str(script)], check=True)
-
-
 def main() -> None:
     check_deps()
     setup_source_link()
@@ -128,12 +124,10 @@ def main() -> None:
         scripts_to_run = discover_scripts()
 
     if scripts_to_run:
-        console.rule("[bold blue]Layer 2 — Components")
         with StepRunner() as steps:
             for script in scripts_to_run:
                 label = script.stem.replace("_", " ").title()
-                steps.run(label, run_script, script)
-        console.print()
+                steps.run_script(label, script)
 
     console.rule("[bold green]done")
 

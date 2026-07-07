@@ -17,7 +17,7 @@ packages = [
 
 [arch.yay]
 packages = [
-    "brave-bin",
+    "brave-origin-bin",
     "librewolf-bin",
     "protonup-qt",
     "pear-desktop-bin",

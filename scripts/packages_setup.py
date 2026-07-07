@@ -1,7 +1,7 @@
 #!/usr/bin/env -S uv run
 # /// script
 # requires-python = ">=3.12"
-# dependencies = []
+# dependencies = ["rich"]
 # ///
 """
 General software installer — reads packages.toml and installs per distro.

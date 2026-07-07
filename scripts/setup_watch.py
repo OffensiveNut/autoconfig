@@ -1,7 +1,7 @@
 #!/usr/bin/env -S uv run
 # /// script
 # requires-python = ">=3.12"
-# dependencies = []
+# dependencies = ["rich"]
 # ///
 """
 Set up automatic chezmoi re-add via systemd path units.

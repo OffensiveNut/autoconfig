@@ -1,7 +1,7 @@
 #!/usr/bin/env -S uv run
 # /// script
 # requires-python = ">=3.12"
-# dependencies = []
+# dependencies = ["rich"]
 # ///
 """
 Isaac Lab Setup — Layer 2 Component Engine.
@@ -22,22 +22,23 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 from lib.ui import info, warn, ok, run
 
 
-def detect_distro() -> str | None:
+def _is_debian() -> bool:
     try:
         with open("/etc/os-release") as f:
             for line in f:
                 if line.startswith("ID="):
-                    return line.split("=", 1)[1].strip().strip("\"")
+                    return line.split("=", 1)[1].strip().strip("\"") in ("ubuntu", "debian", "pop", "linuxmint")
     except FileNotFoundError:
         pass
-    return None
+    return False
+
+
+if not _is_debian():
+    ok("Isaac Lab requires Debian/Ubuntu — skipping")
+    sys.exit(0)
 
 
 def install_isaac() -> None:
-    distro = detect_distro()
-    if distro not in ("ubuntu", "debian", "pop", "linuxmint"):
-        warn(f"unsupported distro ({distro}) — Isaac Lab requires Ubuntu/Debian")
-        return
 
     home = Path.home()
     workspace = home / "Projects/isaac"

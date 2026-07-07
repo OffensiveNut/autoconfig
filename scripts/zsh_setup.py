@@ -24,7 +24,7 @@ import tempfile
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
-from lib.ui import console, info, warn, ok, run
+from lib.ui import StepRunner, console, info, warn, ok, run
 
 
 def detect_pkg_manager() -> str | None:
@@ -224,8 +224,6 @@ def main() -> None:
         ("Zsh plugins", apply_zsh_plugins),
         ("Set zsh as default shell", set_default_shell),
     ]
-
-    from lib.ui import StepRunner
 
     with StepRunner() as runner:
         for label, func in steps:
