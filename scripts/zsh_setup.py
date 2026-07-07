@@ -123,19 +123,19 @@ def install_chezmoi() -> None:
 
 
 def apply_zsh_plugins() -> None:
-    home = Path.home()
+    plugin_dir = Path.home() / ".config/zsh/plugin"
     plugins = {
         "zsh-syntax-highlighting": "https://github.com/zsh-users/zsh-syntax-highlighting.git",
         "zsh-autosuggestions": "https://github.com/zsh-users/zsh-autosuggestions.git",
         "powerlevel10k": "https://github.com/romkatv/powerlevel10k.git",
     }
     for name, url in plugins.items():
-        target = home / name
+        target = plugin_dir / name
         if not target.is_dir():
+            target.parent.mkdir(parents=True, exist_ok=True)
             run(["git", "clone", "--depth=1", url, str(target)])
 
-    # Compile p10k (the others are compiled on first shell launch via zshrc)
-    p10k = home / "powerlevel10k"
+    p10k = plugin_dir / "powerlevel10k"
     if (p10k / "Makefile").exists():
         run(["make", "-C", str(p10k), "pkg"])
 
