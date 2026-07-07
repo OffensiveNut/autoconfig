@@ -1,0 +1,37 @@
+# Package definitions per distro family.
+# Each section lists packages for a (distro, manager) pair.
+# Manager is the command used to install: pacman, yay, apt, flatpak, snap, etc.
+
+[arch.pacman]
+packages = [
+    "discord",
+    "steam",
+    "keepassxc",
+    "syncthing",
+    "obs-studio",
+    "kitty",
+    "btop",
+    "zed",
+    "lutris",
+]
+
+[arch.yay]
+packages = [
+    "brave-bin",
+    "librewolf-bin",
+    "protonup-qt",
+    "pear-desktop-bin",
+]
+
+[debian.apt]
+packages = [
+    "discord",
+    "steam-installer",
+    "keepassxc",
+    "syncthing",
+    "obs-studio",
+    "kitty",
+    "btop",
+    "zed",
+    "lutris",
+]

@@ -72,15 +72,16 @@ Create `scripts/my_thing.py` with a uv shebang:
 ```
 .
 ├── apply.sh                # Orchestrator: Layer 1 → Layer 2 (auto-discovery)
-├── bootstrap.sh            # Layer 0: system prep
+├── bootstrap.sh            # Layer 0: system prep + yay
+├── packages.toml           # Per-distro package lists (pacman/aur/apt)
 ├── dot_chezmoi/            # Layer 1: chezmoi source
 │   ├── dot_zshrc
 │   ├── dot_p10k.zsh
-│   └── private_dot_config/{zed,syncthing}/
+│   └── private_dot_config/{kitty,zed,syncthing}/
 ├── scripts/                # Layer 2: component engines
-│   ├── zsh_setup.py        # Fonts, atuin, zoxide, zsh plugins
-│   ├── docker_setup.py     # (future)
-│   ├── ros_workspace.py    # (future)
+│   ├── packages_setup.py   # Reads packages.toml, installs per distro
+│   ├── zsh_setup.py        # Fonts, atuin, zoxide, eza, ccat, advcpmv, zsh plugins
+│   ├── isaac_lab.py        # Ubuntu-only Isaac Sim/Lab (opt-in --install)
 │   └── ...                 # Drop new .py files here
 └── project_guideline.md    # This file
 ```

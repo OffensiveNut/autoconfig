@@ -94,6 +94,19 @@ install_chezmoi() {
     esac
 }
 
+install_yay() {
+    if command -v yay >/dev/null 2>&1; then
+        info "yay already installed, skipping"
+        return
+    fi
+    if [ "$DISTRO" != "arch" ]; then
+        return
+    fi
+    info "installing yay (AUR helper)"
+    git clone --depth=1 https://aur.archlinux.org/yay.git /tmp/yay
+    (cd /tmp/yay && makepkg -si --noconfirm --needed)
+}
+
 main() {
     detect_distro
     ensure_root
@@ -101,6 +114,7 @@ main() {
     install_baselines
     install_uv
     install_chezmoi
+    install_yay
 
     info "bootstrap complete"
     info "next step: ./apply.sh"
