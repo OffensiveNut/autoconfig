@@ -86,6 +86,17 @@ def main() -> None:
                 link.parent.mkdir(parents=True, exist_ok=True)
                 link.symlink_to(assets_dir)
                 info(f"linked assets → ~/.local/share/autoconfig-assets")
+
+        # Expand ~ to absolute path in applied configs (KDE/Qt doesn't expand it)
+        home = str(Path.home())
+        cfg_dir = Path.home() / ".config"
+        for pattern in ["kitty/kitty.conf", "plasma-org.kde.plasma.desktop-appletsrc", "plasma6/plasma-org.kde.plasma.desktop-appletsrc"]:
+            f = cfg_dir / pattern
+            if f.exists():
+                content = f.read_text()
+                content = content.replace("file://~/", f"file://{home}/")
+                content = content.replace("~", home)
+                f.write_text(content)
         console.print()
 
     scripts = args or sorted(Path("scripts").glob("*.py"))
