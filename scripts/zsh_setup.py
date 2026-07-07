@@ -17,14 +17,14 @@ Installs:
   - Sets zsh as default login shell
 """
 
+import os
 import shutil
 import subprocess
 import sys
-import tempfile
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
-from lib.ui import StepRunner, console, info, warn, ok, run
+from lib.ui import StepRunner, console, info, ok, run, warn
 
 
 def detect_pkg_manager() -> str | None:
@@ -101,7 +101,18 @@ def install_atuin() -> None:
     if shutil.which("atuin"):
         ok("atuin already installed")
         return
-    run(["curl", "--proto", "=https", "--tlsv1.2", "-LsSf", "https://setup.atuin.sh", "-o", "/tmp/atuin.sh"])
+    run(
+        [
+            "curl",
+            "--proto",
+            "=https",
+            "--tlsv1.2",
+            "-LsSf",
+            "https://setup.atuin.sh",
+            "-o",
+            "/tmp/atuin.sh",
+        ]
+    )
     run(["sh", "/tmp/atuin.sh"])
     ok("atuin installed")
 
@@ -113,7 +124,15 @@ def install_zoxide() -> None:
     if shutil.which("cargo"):
         run(["cargo", "install", "zoxide", "--locked"])
     else:
-        run(["curl", "-fsSL", "https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh", "-o", "/tmp/zoxide.sh"])
+        run(
+            [
+                "curl",
+                "-fsSL",
+                "https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh",
+                "-o",
+                "/tmp/zoxide.sh",
+            ]
+        )
         run(["sh", "/tmp/zoxide.sh"])
     ok("zoxide installed")
 
@@ -127,10 +146,41 @@ def install_eza() -> None:
         run(pkg_install("eza"))
     elif mgr == "apt-get":
         run(["sudo", "mkdir", "-p", "/etc/apt/keyrings"])
-        run(["curl", "-fsSL", "https://raw.githubusercontent.com/eza-community/eza/main/deb.asc", "-o", "/tmp/eza.asc"])
-        run(["sudo", "gpg", "--dearmor", "-o", "/etc/apt/keyrings/gierens.gpg", "/tmp/eza.asc"])
-        run(["sh", "-c", "echo 'deb [signed-by=/etc/apt/keyrings/gierens.gpg] http://deb.gierens.de stable main' | sudo tee /etc/apt/sources.list.d/gierens.list >/dev/null"])
-        run(["sudo", "chmod", "644", "/etc/apt/keyrings/gierens.gpg", "/etc/apt/sources.list.d/gierens.list"])
+        run(
+            [
+                "curl",
+                "-fsSL",
+                "https://raw.githubusercontent.com/eza-community/eza/main/deb.asc",
+                "-o",
+                "/tmp/eza.asc",
+            ]
+        )
+        run(
+            [
+                "sudo",
+                "gpg",
+                "--dearmor",
+                "-o",
+                "/etc/apt/keyrings/gierens.gpg",
+                "/tmp/eza.asc",
+            ]
+        )
+        run(
+            [
+                "sh",
+                "-c",
+                "echo 'deb [signed-by=/etc/apt/keyrings/gierens.gpg] http://deb.gierens.de stable main' | sudo tee /etc/apt/sources.list.d/gierens.list >/dev/null",
+            ]
+        )
+        run(
+            [
+                "sudo",
+                "chmod",
+                "644",
+                "/etc/apt/keyrings/gierens.gpg",
+                "/etc/apt/sources.list.d/gierens.list",
+            ]
+        )
         run(["sudo", "apt-get", "update"])
         run(pkg_install("eza"))
     else:
@@ -142,7 +192,9 @@ def install_ccat() -> None:
     if shutil.which("ccat") and shutil.which("cless"):
         ok("ccat already installed")
         return
-    arch = subprocess.run(["uname", "-m"], capture_output=True, text=True).stdout.strip()
+    arch = subprocess.run(
+        ["uname", "-m"], capture_output=True, text=True
+    ).stdout.strip()
     base = "https://github.com/owenthereal/ccat/releases/latest/download"
     suffix = "linux-amd64" if arch == "x86_64" else f"linux-{arch}"
     tmp = Path("/tmp/ccat")
@@ -171,7 +223,15 @@ def install_advcpmv() -> None:
     tmp = Path("/tmp/advcpmv")
     tmp.mkdir(parents=True, exist_ok=True)
     script = tmp / "install.sh"
-    run(["curl", "-fsSL", "https://raw.githubusercontent.com/jarun/advcpmv/master/install.sh", "-o", str(script)])
+    run(
+        [
+            "curl",
+            "-fsSL",
+            "https://raw.githubusercontent.com/jarun/advcpmv/master/install.sh",
+            "-o",
+            str(script),
+        ]
+    )
     run(["sh", str(script)], cwd=str(tmp))
     if (tmp / "advcp").exists():
         run(["sudo", "mv", str(tmp / "advcp"), "/usr/local/bin/advcp"])
@@ -220,11 +280,17 @@ def set_default_shell() -> None:
     if not zsh_path:
         warn("zsh not found, can't set as default shell")
         return
+    import pwd
+
+    current = pwd.getpwnam(os.environ.get("USER", "")).pw_shell
+    if current == zsh_path:
+        ok("zsh already default shell")
+        return
     result = subprocess.run(["chsh", "-s", zsh_path])
     if result.returncode == 0:
         info("zsh set as default login shell (log out and back in)")
     else:
-        warn(f"failed to set zsh as default shell")
+        warn("failed to set zsh as default shell")
 
 
 def main() -> None:
