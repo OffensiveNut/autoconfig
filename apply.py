@@ -55,6 +55,28 @@ def main() -> None:
     if "--layer2" not in flags:
         info("applying chezmoi dotfiles")
         subprocess.run(["chezmoi", "apply"], check=True)
+
+        # Strip ephemeral ConfigDialog sections and symlink plasma6 configs
+        plasma_dir = Path.home() / ".config/plasma6"
+        if plasma_dir.is_dir():
+            for f in plasma_dir.iterdir():
+                text = f.read_text().splitlines()
+                out = []
+                skip = False
+                for line in text:
+                    if line.startswith("[") and line.endswith("][ConfigDialog]"):
+                        skip = True
+                        continue
+                    if line.startswith("[") and not "ConfigDialog" in line:
+                        skip = False
+                    if not skip:
+                        out.append(line)
+                f.write_text("\n".join(out) + "\n")
+
+                target = Path.home() / ".config" / f.name
+                if not target.exists() and not target.is_symlink():
+                    target.symlink_to(f)
+                    info(f"linked ~/.config/plasma6/{f.name}")
         console.print()
 
     scripts = args or sorted(Path("scripts").glob("*.py"))

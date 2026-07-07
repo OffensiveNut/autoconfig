@@ -1,3 +1,15 @@
+[ActionsWidget]
+ColumnState=AAAA/wAAAAAAAAABAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAboAAAACAQAAAQAAAAAAAAAAAAAAAGT/////AAAAgQAAAAAAAAACAAAA+gAAAAEAAAAAAAAAwAAAAAEAAAAAAAAD6AAAAABkAAAAAAAAAAAAAAAAAAAAAQ==
+
+[ConfigDialog]
+1536x864 screen: Height=550
+1536x864 screen: Width=723
+
+[ExtractDialog]
+1536x864 screen: Height=480
+1536x864 screen: Width=1024
+DirHistory[$e]=$HOME/Documents/depthEstimation/nuwa/
+
 [General]
 Number of Actions=0
 
