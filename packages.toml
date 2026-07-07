@@ -17,6 +17,10 @@ packages = [
     "bat",
     "mpv",
     "obsidian",
+    "neovim",
+    "pacman-contrib",
+    "fastfetch",
+    "rate-mirrors",
 ]
 
 [arch.yay]
@@ -26,6 +30,9 @@ packages = [
     "protonup-qt",
     "pear-desktop-bin",
     "zoom",
+    "ente-auth-bin",
+    "namida-bin",
+    "lrcget-bin",
 ]
 
 [debian.apt]
@@ -40,4 +47,6 @@ packages = [
     "zed",
     "lutris",
     "bat",
+    "neovim",
+    "fastfetch",
 ]
