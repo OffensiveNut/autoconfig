@@ -65,6 +65,17 @@ install_baselines() {
     $SUDO $PM_INSTALL $DEV_BASE git curl
 }
 
+install_rust() {
+    if command -v cargo >/dev/null 2>&1; then
+        info "rust/cargo already installed, skipping"
+        return
+    fi
+    info "installing rustup (rust/cargo toolchain)"
+    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+    # shellcheck source=disable
+    . "$HOME/.cargo/env"
+}
+
 install_uv() {
     if command -v uv >/dev/null 2>&1; then
         info "uv already installed, skipping"
@@ -112,6 +123,7 @@ main() {
     ensure_root
     update_packages
     install_baselines
+    install_rust
     install_uv
     install_chezmoi
     install_yay
