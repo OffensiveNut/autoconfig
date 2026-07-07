@@ -3,17 +3,22 @@ set -eu
 
 ##############################
 # apply.sh — Layer Orchestrator
-# Applies chezmoi dotfiles (Layer 1), then runs any number of
-# component scripts (Layer 2).  Auto-discovers scripts/ by default.
+#
+# Manages dotfiles and runs component installers.
+# Links ~/.local/share/chezmoi → dot_chezmoi/ for two-way sync.
 #
 # Usage:
-#   ./apply.sh                   # chezmoi + all scripts
-#   ./apply.sh scripts/foo.py    # chezmoi + specific script(s)
-#   ./apply.sh --layer2          # skip chezmoi, run all scripts
-#   ./apply.sh --layer2 scripts/foo.py
+#   ./apply.sh                                 # apply + all scripts
+#   ./apply.sh --layer2                        # skip apply, run all scripts
+#   ./apply.sh --layer2 scripts/foo.py         # skip apply, run specific scripts
+#   ./apply.sh scripts/foo.py                  # apply + specific scripts
+#   ./apply.sh --re-add                        # re-add + apply + all scripts
+#   ./apply.sh --re-add ~/.zshrc               # re-add file + apply + all scripts
+#   ./apply.sh --re-add -- layer2 scripts/foo.py
 ##############################
 
-LAYER1_SOURCE="$PWD/dot_chezmoi"
+REPO_SOURCE="$PWD/dot_chezmoi"
+CHEZMOI_SOURCE="${XDG_DATA_HOME:-$HOME/.local/share}/chezmoi"
 
 info()  { printf '[INFO]  %s\n' "$*"; }
 warn()  { printf '[WARN]  %s\n' "$*"; }
@@ -30,9 +35,33 @@ check_deps() {
     fi
 }
 
+setup_source_link() {
+    if [ "$(readlink -f "$CHEZMOI_SOURCE" 2>/dev/null)" = "$(readlink -f "$REPO_SOURCE")" ]; then
+        return
+    fi
+    if [ -e "$CHEZMOI_SOURCE" ] && [ ! -L "$CHEZMOI_SOURCE" ]; then
+        warn "backing up existing chezmoi source to ${CHEZMOI_SOURCE}.bak"
+        mv "$CHEZMOI_SOURCE" "${CHEZMOI_SOURCE}.bak"
+    fi
+    mkdir -p "$(dirname "$CHEZMOI_SOURCE")"
+    ln -sfn "$REPO_SOURCE" "$CHEZMOI_SOURCE"
+    info "linked chezmoi source to repo"
+}
+
 apply_chezmoi() {
     info "Layer 1 — applying chezmoi dotfiles"
-    chezmoi apply --source "$LAYER1_SOURCE"
+    chezmoi apply
+}
+
+re_add_chezmoi() {
+    if [ $# -gt 0 ]; then
+        info "pulling system changes back to repo: $*"
+        chezmoi re-add "$@"
+    else
+        info "pulling all system changes back to repo"
+        chezmoi re-add
+    fi
+    info "run 'git status' to see what changed"
 }
 
 run_script() {
@@ -48,16 +77,34 @@ run_script() {
 
 main() {
     check_deps
+    setup_source_link
 
+    RE_ADD=false
+    PASSED_DASHLINE=false
     LAYER2_ONLY=false
+    RE_ADD_FILES=""
     SCRIPT_ARGS=""
 
     for arg in "$@"; do
         case "$arg" in
+            --re-add) RE_ADD=true ;;
+            --) PASSED_DASHLINE=true ;;
             --layer2) LAYER2_ONLY=true ;;
-            *) SCRIPT_ARGS="$SCRIPT_ARGS $arg" ;;
+            *)
+                if [ "$RE_ADD" = true ] && [ "$PASSED_DASHLINE" = false ]; then
+                    RE_ADD_FILES="$RE_ADD_FILES $arg"
+                else
+                    SCRIPT_ARGS="$SCRIPT_ARGS $arg"
+                fi
+                ;;
         esac
     done
+
+    if [ "$RE_ADD" = true ]; then
+        # shellcheck disable=SC2086
+        re_add_chezmoi $RE_ADD_FILES
+        printf '\n'
+    fi
 
     if [ "$LAYER2_ONLY" = false ]; then
         apply_chezmoi
@@ -68,7 +115,12 @@ main() {
         for script in $SCRIPT_ARGS; do
             run_script "$script"
         done
-    else
+    elif [ "$RE_ADD" = false ] && [ "$LAYER2_ONLY" = false ]; then
+        for script in scripts/*.py; do
+            [ -f "$script" ] || continue
+            run_script "$script"
+        done
+    elif [ "$LAYER2_ONLY" = true ]; then
         for script in scripts/*.py; do
             [ -f "$script" ] || continue
             run_script "$script"

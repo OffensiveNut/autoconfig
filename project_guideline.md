@@ -82,6 +82,7 @@ Create `scripts/my_thing.py` with a uv shebang:
 │   ├── packages_setup.py   # Reads packages.toml, installs per distro
 │   ├── zsh_setup.py        # Fonts, atuin, zoxide, eza, ccat, advcpmv, zsh plugins
 │   ├── isaac_lab.py        # Ubuntu-only Isaac Sim/Lab (opt-in --install)
+│   ├── setup_watch.py      # systemd path unit: auto re-add on file change
 │   └── ...                 # Drop new .py files here
 └── project_guideline.md    # This file
 ```

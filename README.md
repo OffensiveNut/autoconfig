@@ -34,13 +34,37 @@ Idempotent — safe to re-run.
 
 ### Layer 1 — `dot_chezmoi/`
 
-Chezmoi source directory. Applied automatically by `./apply.sh`.
+Chezmoi source directory. `./apply.sh` links `~/.local/share/chezmoi` → this
+repo's `dot_chezmoi/` for two-way sync.
 
 | File | Installed to |
 |------|-------------|
 | `dot_chezmoi/dot_zshrc` | `~/.zshrc` |
 | `dot_chezmoi/dot_p10k.zsh` | `~/.p10k.zsh` |
 | `dot_chezmoi/private_dot_config/kitty/kitty.conf` | `~/.config/kitty/kitty.conf` |
+
+**Two-way sync:**
+
+```sh
+# Repo → system (apply dotfiles)
+./apply.sh
+
+# System → repo (pull changes back)
+./apply.sh --re-add
+./apply.sh --re-add ~/.zshrc
+```
+
+**Auto-watch** — automatically sync edits back to the repo in real time:
+
+```sh
+uv run scripts/setup_watch.py          # start watching (runs as a systemd user service)
+uv run scripts/setup_watch.py status   # check if it's running
+uv run scripts/setup_watch.py stop     # stop watching
+```
+
+This creates a systemd path unit that watches all chezmoi-managed files.
+When you save a file (e.g. `~/.zshrc`), it automatically runs `chezmoi re-add`
+and updates this repo's copy.
 
 To add a new dotfile, just drop it in `dot_chezmoi/` with the right prefix:
 - `dot_` → `.` (e.g. `dot_gitconfig` → `~/.gitconfig`)
