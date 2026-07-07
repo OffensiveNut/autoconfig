@@ -218,11 +218,11 @@ def set_default_shell() -> None:
     if not zsh_path:
         warn("zsh not found, can't set as default shell")
         return
-    result = subprocess.run(["chsh", "-s", zsh_path], capture_output=True, text=True)
+    result = subprocess.run(["chsh", "-s", zsh_path])
     if result.returncode == 0:
         info("zsh set as default login shell (log out and back in)")
     else:
-        warn(f"failed to set zsh as default shell: {result.stderr.strip()}")
+        warn(f"failed to set zsh as default shell")
 
 
 def main() -> None:
