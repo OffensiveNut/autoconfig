@@ -77,6 +77,15 @@ def main() -> None:
                 if not target.exists() and not target.is_symlink():
                     target.symlink_to(f)
                     info(f"linked ~/.config/plasma6/{f.name}")
+
+        # Symlink repo assets into home so configs can reference them
+        assets_dir = Path("assets").resolve()
+        if assets_dir.is_dir():
+            link = Path.home() / ".local/share/autoconfig-assets"
+            if not link.exists():
+                link.parent.mkdir(parents=True, exist_ok=True)
+                link.symlink_to(assets_dir)
+                info(f"linked assets → ~/.local/share/autoconfig-assets")
         console.print()
 
     scripts = args or sorted(Path("scripts").glob("*.py"))
