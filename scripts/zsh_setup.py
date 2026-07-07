@@ -197,6 +197,18 @@ def apply_zsh_plugins() -> None:
         run(["make", "-C", str(p10k), "pkg"])
 
 
+def set_default_shell() -> None:
+    zsh_path = shutil.which("zsh")
+    if not zsh_path:
+        warn("zsh not found, can't set as default shell")
+        return
+    result = subprocess.run(["chsh", "-s", zsh_path], capture_output=True, text=True)
+    if result.returncode == 0:
+        info("zsh set as default login shell (log out and back in)")
+    else:
+        warn(f"failed to set zsh as default shell: {result.stderr.strip()}")
+
+
 def main() -> None:
     steps = [
         ("Nerd Fonts (MesloLGS, JetBrainsMono, FontAwesome)", install_fonts),
@@ -206,6 +218,7 @@ def main() -> None:
         ("Ccat (highlighted cat/less)", install_ccat),
         ("Advcpmv (cp/mv progress)", install_advcpmv),
         ("Zsh plugins (syntax-highlighting, autosuggestions, p10k)", apply_zsh_plugins),
+        ("Set zsh as default shell", set_default_shell),
     ]
     for label, func in steps:
         func()
