@@ -1,81 +1,86 @@
 # System Automation Architecture (AI Agent Guidelines)
 
-This repository holds my system automation logic. It is structured explicitly for an **AI Agent** or Co-pilot to generate, extend, and modify my environment scripts safely across different Linux distributions.
+This repository holds my system automation logic. Designed for an **AI Agent** to generate, extend, and modify environment scripts across Linux distributions.
 
 ---
 
-## 🏗️ The 3-Layer Design Strategy
+## The 3-Layer Strategy
 
-Every automated workflow must be split into its proper layer to balance performance and maintainability:
+```
+./bootstrap.sh    ──►  Layer 0: Baremetal (POSIX sh)
+                            Distro detection, git/curl/uv/chezmoi
 
-[ Baremetal Setup ] ──> Layer 0: bootstrap.sh (POSIX sh)
-│ (Detects distro, installs baseline tools & 'uv')
-▼
-Layer 1: Configuration (Chezmoi)
-│ (Symlinks dotfiles, terminal tools, IDEs)
-▼
-Layer 2: Component-Based Engines (Python via uv)
-(Each component handles its own installation/compilation)
+./apply.sh        ──►  Layer 1: Dotfiles (chezmoi)
+                            Symlinks .zshrc, .p10k.zsh, .config/*
 
+                    ──►  Layer 2: Components (Python via uv)
+                            scripts/*.py — auto-discovered, each self-contained
+```
 
-1. **Layer 0: Bootstrap (`bootstrap.sh`)**
-   * *Purpose:* Get the system bare-minimum ready.
-   * *Stack:* Raw POSIX `sh`.
-   * *Tasks:* Detect host OS, update package manager, install `git`, `curl`, development baselines, and bootstrap the standalone `uv` python engine.
+**Layer 0 — Bootstrap (`bootstrap.sh`)**
+- Raw POSIX `sh`, run once on a fresh system.
+- Detects distro (`/etc/os-release`), updates packages, installs `git`/`curl`/`base-devel`/`build-essential`, bootstraps `uv`, installs `chezmoi`.
+- Idempotent — safe to re-run.
 
-2. **Layer 1: Configuration (`dot_chezmoi/`)**
-   * *Purpose:* Track static state and configurations.
-   * *Stack:* `chezmoi`
-   * *Tasks:* Symlink shell files (`.zshrc`), desktop configs, and IDE states (Zed configs, Claude Code profiles).
+**Layer 1 — Dotfiles (`dot_chezmoi/`)**
+- Chezmoi source directory. Every file with a `dot_`/`private_`/`executable_` prefix is discovered automatically by chezmoi.
+- Applied via `./apply.sh` or `chezmoi apply --source "$PWD/dot_chezmoi"`.
 
-3. **Layer 2: Component-Based Engines (`scripts/`)**
-   * *Purpose:* Heavy compilation, hardware interfacing, and workspace orchestration.
-   * *Stack:* Pure Python 3.12+ (run isolated via `uv run`).
-   * *Structure:* **Highly modular.** Every major software stack or hardware component gets its own dedicated Python script containing all the logic needed to install, build, and verify that specific system.
+**Layer 2 — Components (`scripts/`)**
+- Every `.py` file is a standalone component engine run via `uv run`.
+- Auto-discovered by `./apply.sh` — no manifest to update.
+- Each script declares its deps in inline uv metadata (`# /// script`).
 
 ---
 
-## 🤖 Strict Rules for AI Generation
+## How to Add Stuff
 
-When creating or amending any code in this repository, you **must** follow these fundamental constraints:
+### New dotfile
+Drop a file in `dot_chezmoi/` with the right chezmoi prefix:
+```
+dot_chezmoi/dot_gitconfig          → ~/.gitconfig
+dot_chezmoi/private_dot_config/foo/bar → ~/.config/foo/bar (mode 600)
+```
+No registration needed — `./apply.sh` picks it up.
 
-### 1. Component Isolation
-* Keep software workflows isolated. If asked to update how ROS or Docker is configured, all procedural logic, dependency lists, and system checks for that software must live entirely within its own file under `scripts/`.
-* Use inline `uv` script metadata at the top of each file to declare the exact Python dependencies that specific script needs.
-
-### 2. Distro-Agnostic Core Architecture
-The automation framework must adapt seamlessly across clean installations on different base environments. **At a minimum, scripts must support Arch Linux (including Artix) and Debian/Ubuntu-based distributions.**
-* **Package Management:** Do not hardcode package manager commands (`pacman` or `apt`). Abstract installations by checking which package manager is present, or utilize Python logic to branch depending on the detected OS family.
-* **Dependencies:** Map package names correctly, as they frequently differ between ecosystems (e.g., `base-devel` on Arch vs. `build-essential` on Debian/Ubuntu).
-
-### 3. Hard Idempotency Only
-Every script block must safely support infinite execution runs. 
-* Never issue blind install commands or overwrite files blindly. 
-* **Always check state first:** verify if a binary is in the `$PATH`, if a systemd service is active, or if a kernel configuration signature (like `/sys/module/ec_master`) exists before performing an action.
-
-### 4. Zero Global Environment Contamination
-* Never execute global `pip install` commands or break system package-managed Python scopes. 
-* All Python automation steps must run inside virtualized context windows via `uv run`. 
-
-### 5. Dynamic Path Resolution
-* Never hardcode explicit home paths. Use shell variable evaluations (`$HOME`) or Python abstractions (`Path.home()`) exclusively.
+### New component script
+Create `scripts/my_thing.py` with a uv shebang:
+```python
+#!/usr/bin/env -S uv run
+# /// script
+# requires-python = ">=3.12"
+# dependencies = ["requests"]
+# ///
+"""Install my thing."""
+```
+`./apply.sh` discovers and runs it automatically.
 
 ---
 
-## 📁 Repository Layout Target
+## Strict Rules
 
-```text
+1. **Isolation** — Each component is its own file under `scripts/`. No shared state.
+2. **Distro-agnostic** — Support Arch (Artix, CachyOS, EndeavourOS, Manjaro) and Debian/Ubuntu (Pop, Mint). Abstract package manager commands.
+3. **Idempotent** — Check state first (`command -v`, `Path.exists()`, `systemctl is-active`). Never blindly install or overwrite.
+4. **No global pip** — All Python runs inside `uv run` virtualized contexts.
+5. **Dynamic paths** — Use `$HOME` or `Path.home()`, never hardcode `/home/username`.
+
+---
+
+## Repository Layout
+
+```
 .
-├── bootstrap.sh               # Layer 0: Baremetal entrypoint (Distro detection)
-├── dot_chezmoi/               # Layer 1: Dotfile source trees
-│   ├── dot_zshrc              # Zsh configs & terminal hooks
-│   └── private_dot_config/
-│       ├── zed/               # Editor parameters
-│       └── syncthing/         # Local syncing engine properties
-└── scripts/                   # Layer 2: Dedicated Component Engines
-    ├── docker_setup.py        # Installs daemon, configures groups & systemd runtime
-    ├── ethercat_driver.py     # Checks kernel modules & compiles real-time master from source
-    ├── ros_workspace.py       # Handles ROS distro selection, dependencies, & workspace sourcing
-    ├── isaac_lab.py           # Sets up CUDA environments & Omni/Isaac simulation paths
-    ├── syncthing_config.py    # Installs application & sets up local service files
-    └── claude_code.py         # Installs Node/NPM baselines & configures AI tooling
+├── apply.sh                # Orchestrator: Layer 1 → Layer 2 (auto-discovery)
+├── bootstrap.sh            # Layer 0: system prep
+├── dot_chezmoi/            # Layer 1: chezmoi source
+│   ├── dot_zshrc
+│   ├── dot_p10k.zsh
+│   └── private_dot_config/{zed,syncthing}/
+├── scripts/                # Layer 2: component engines
+│   ├── zsh_setup.py        # Fonts, atuin, zoxide, zsh plugins
+│   ├── docker_setup.py     # (future)
+│   ├── ros_workspace.py    # (future)
+│   └── ...                 # Drop new .py files here
+└── project_guideline.md    # This file
+```

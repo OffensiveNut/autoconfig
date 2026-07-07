@@ -80,15 +80,30 @@ install_uv() {
     fi
 }
 
+install_chezmoi() {
+    if command -v chezmoi >/dev/null 2>&1; then
+        info "chezmoi already installed, skipping"
+        return
+    fi
+    info "installing chezmoi"
+    case "${PM_INSTALL%% *}" in
+        pacman) $SUDO pacman -S --noconfirm chezmoi ;;
+        apt-get) $SUDO apt-get install -y chezmoi ;;
+        dnf) $SUDO dnf install -y chezmoi ;;
+        *) sh -c "$(curl -fsLS get.chezmoi.io)" ;;
+    esac
+}
+
 main() {
     detect_distro
     ensure_root
     update_packages
     install_baselines
     install_uv
+    install_chezmoi
 
     info "bootstrap complete"
-    info "next step: chezmoi init --apply <source>"
+    info "next step: ./apply.sh"
 }
 
 main

@@ -10,7 +10,6 @@ Installs:
   - Nerd Fonts (MesloLGS, JetBrainsMono) with FontAwesome icons
   - Atuin (shell history)
   - Zoxide (smarter cd)
-  - Chezmoi (dotfile manager)
   - Zsh plugins (syntax-highlighting, autosuggestions, powerlevel10k)
 """
 
@@ -25,13 +24,6 @@ def is_installed(binary: str) -> bool:
 
 def run(cmd: list[str], **kwargs) -> subprocess.CompletedProcess:
     return subprocess.run(cmd, check=True, **kwargs)
-
-
-def detect_pkg_manager() -> str:
-    for mgr in ("pacman", "apt-get", "dnf", "zypper", "nix"):
-        if shutil.which(mgr):
-            return mgr
-    raise RuntimeError("no supported package manager found")
 
 
 def install_fonts() -> None:
@@ -108,20 +100,6 @@ def install_zoxide() -> None:
         run(["sh", "/tmp/zoxide.sh"])
 
 
-def install_chezmoi() -> None:
-    if is_installed("chezmoi"):
-        return
-    mgr = detect_pkg_manager()
-    if mgr == "pacman":
-        run(["sudo", "pacman", "-S", "--noconfirm", "chezmoi"])
-    elif mgr == "apt-get":
-        run(["sudo", "apt-get", "install", "-y", "chezmoi"])
-    elif mgr == "dnf":
-        run(["sudo", "dnf", "install", "-y", "chezmoi"])
-    else:
-        run(["sh", "-c", "$(curl -fsLS get.chezmoi.io)"])
-
-
 def apply_zsh_plugins() -> None:
     plugin_dir = Path.home() / ".config/zsh/plugin"
     plugins = {
@@ -145,13 +123,10 @@ def main() -> None:
         ("Nerd Fonts (MesloLGS, JetBrainsMono, FontAwesome)", install_fonts),
         ("Atuin (shell history)", install_atuin),
         ("Zoxide (smart cd)", install_zoxide),
-        ("Chezmoi (dotfile manager)", install_chezmoi),
         ("Zsh plugins (syntax-highlighting, autosuggestions, p10k)", apply_zsh_plugins),
     ]
     for label, func in steps:
         func()
-
-    print("chezmoi apply")
 
 
 if __name__ == "__main__":
