@@ -18,20 +18,10 @@ import sys
 import tomllib
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+from lib.ui import info, warn, ok, run
 
 PACKAGES_FILE = Path(__file__).resolve().parent.parent / "packages.toml"
-
-
-def info(msg: str) -> None:
-    print(f"[INFO]  {msg}")
-
-
-def warn(msg: str) -> None:
-    print(f"[WARN]  {msg}")
-
-
-def run(cmd: list[str], **kwargs) -> subprocess.CompletedProcess:
-    return subprocess.run(cmd, check=True, **kwargs)
 
 
 def detect_distro() -> str | None:

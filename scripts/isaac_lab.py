@@ -18,17 +18,8 @@ import subprocess
 import sys
 from pathlib import Path
 
-
-def info(msg: str) -> None:
-    print(f"[INFO]  {msg}")
-
-
-def warn(msg: str) -> None:
-    print(f"[WARN]  {msg}")
-
-
-def run(cmd: list[str], **kwargs) -> subprocess.CompletedProcess:
-    return subprocess.run(cmd, check=True, **kwargs)
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+from lib.ui import info, warn, ok, run
 
 
 def detect_distro() -> str | None:

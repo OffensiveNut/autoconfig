@@ -1,7 +1,7 @@
 #!/usr/bin/env -S uv run
 # /// script
 # requires-python = ">=3.12"
-# dependencies = []
+# dependencies = ["rich"]
 # ///
 """
 Zsh Environment Setup — Layer 2 Component Engine.
@@ -14,20 +14,17 @@ Installs:
   - Ccat (cat with syntax highlighting)
   - Advcpmv (cp/mv with progress bar)
   - Zsh plugins (syntax-highlighting, autosuggestions, powerlevel10k)
+  - Sets zsh as default login shell
 """
 
 import shutil
 import subprocess
+import sys
 import tempfile
 from pathlib import Path
 
-
-def is_installed(binary: str) -> bool:
-    return shutil.which(binary) is not None
-
-
-def run(cmd: list[str], **kwargs) -> subprocess.CompletedProcess:
-    return subprocess.run(cmd, check=True, **kwargs)
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+from lib.ui import console, info, warn, ok, run
 
 
 def detect_pkg_manager() -> str | None:
@@ -49,12 +46,6 @@ def pkg_install(cmd: str) -> list[str]:
 
 
 def install_fonts() -> None:
-    """
-    Install MesloLGS Nerd Font and JetBrains Mono Nerd Font.
-
-    These include FontAwesome glyphs required by Powerlevel10k.
-    Skips if any of the font files already exist under ~/.local/share/fonts.
-    """
     font_dir = Path.home() / ".local/share/fonts"
     fonts = {
         "MesloLGS": {
@@ -82,54 +73,59 @@ def install_fonts() -> None:
         existing = {f.name for f in font_dir.iterdir() if f.is_file()}
 
     needs_install = {
-        name: info
-        for name, info in fonts.items()
-        if not any(f in existing for f in info["files"])
+        name: data
+        for name, data in fonts.items()
+        if not any(f in existing for f in data["files"])
     }
     if not needs_install:
+        ok("fonts already installed")
         return
 
     font_dir.mkdir(parents=True, exist_ok=True)
     tmp = Path("/tmp/font_install")
     tmp.mkdir(parents=True, exist_ok=True)
 
-    for name, info in needs_install.items():
+    for name, data in needs_install.items():
         zip_path = tmp / f"{name}.zip"
-        run(["curl", "-fsSL", "-o", str(zip_path), info["url"]])
+        run(["curl", "-fsSL", "-o", str(zip_path), data["url"]])
         run(["unzip", "-q", "-o", str(zip_path), "-d", str(tmp / name)])
-        for fname in info["files"]:
+        for fname in data["files"]:
             src = tmp / name / fname
             if src.exists():
                 shutil.copy2(src, font_dir / fname)
-
     run(["fc-cache", "-f"])
+    ok("fonts installed")
 
 
 def install_atuin() -> None:
-    if is_installed("atuin"):
+    if shutil.which("atuin"):
+        ok("atuin already installed")
         return
     run(["curl", "--proto", "=https", "--tlsv1.2", "-LsSf", "https://setup.atuin.sh", "-o", "/tmp/atuin.sh"])
     run(["sh", "/tmp/atuin.sh"])
+    ok("atuin installed")
 
 
 def install_zoxide() -> None:
-    if is_installed("zoxide"):
+    if shutil.which("zoxide"):
+        ok("zoxide already installed")
         return
-    if is_installed("cargo"):
+    if shutil.which("cargo"):
         run(["cargo", "install", "zoxide", "--locked"])
     else:
         run(["curl", "-fsSL", "https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh", "-o", "/tmp/zoxide.sh"])
         run(["sh", "/tmp/zoxide.sh"])
+    ok("zoxide installed")
 
 
 def install_eza() -> None:
-    if is_installed("eza"):
+    if shutil.which("eza"):
+        ok("eza already installed")
         return
     mgr = detect_pkg_manager()
     if mgr == "pacman":
         run(pkg_install("eza"))
-        return
-    if mgr == "apt-get":
+    elif mgr == "apt-get":
         run(["sudo", "mkdir", "-p", "/etc/apt/keyrings"])
         run(["curl", "-fsSL", "https://raw.githubusercontent.com/eza-community/eza/main/deb.asc", "-o", "/tmp/eza.asc"])
         run(["sudo", "gpg", "--dearmor", "-o", "/etc/apt/keyrings/gierens.gpg", "/tmp/eza.asc"])
@@ -137,12 +133,14 @@ def install_eza() -> None:
         run(["sudo", "chmod", "644", "/etc/apt/keyrings/gierens.gpg", "/etc/apt/sources.list.d/gierens.list"])
         run(["sudo", "apt-get", "update"])
         run(pkg_install("eza"))
-        return
-    run(["cargo", "install", "eza", "--locked"])
+    else:
+        run(["cargo", "install", "eza", "--locked"])
+    ok("eza installed")
 
 
 def install_ccat() -> None:
-    if is_installed("ccat") and is_installed("cless"):
+    if shutil.which("ccat") and shutil.which("cless"):
+        ok("ccat already installed")
         return
     arch = subprocess.run(["uname", "-m"], capture_output=True, text=True).stdout.strip()
     base = "https://github.com/owenthereal/ccat/releases/latest/download"
@@ -163,10 +161,12 @@ def install_ccat() -> None:
         src = extracted_dir / binary
         if src.exists():
             run(["sudo", "cp", str(src), f"/usr/local/bin/{binary}"])
+    ok("ccat installed")
 
 
 def install_advcpmv() -> None:
     if Path("/usr/local/bin/advcp").exists() and Path("/usr/local/bin/advmv").exists():
+        ok("advcpmv already installed")
         return
     tmp = Path("/tmp/advcpmv")
     tmp.mkdir(parents=True, exist_ok=True)
@@ -177,10 +177,12 @@ def install_advcpmv() -> None:
         run(["sudo", "mv", str(tmp / "advcp"), "/usr/local/bin/advcp"])
     if (tmp / "advmv").exists():
         run(["sudo", "mv", str(tmp / "advmv"), "/usr/local/bin/advmv"])
+    ok("advcpmv installed")
 
 
 def apply_zsh_plugins() -> None:
     plugin_dir = Path.home() / ".config/zsh/plugin"
+    cloned = 0
     plugins = {
         "zsh-syntax-highlighting": "https://github.com/zsh-users/zsh-syntax-highlighting.git",
         "zsh-autosuggestions": "https://github.com/zsh-users/zsh-autosuggestions.git",
@@ -191,10 +193,12 @@ def apply_zsh_plugins() -> None:
         if not target.is_dir():
             target.parent.mkdir(parents=True, exist_ok=True)
             run(["git", "clone", "--depth=1", url, str(target)])
+            cloned += 1
 
     p10k = plugin_dir / "powerlevel10k"
     if (p10k / "Makefile").exists():
         run(["make", "-C", str(p10k), "pkg"])
+    info(f"plugins: {cloned} cloned, {len(plugins) - cloned} cached")
 
 
 def set_default_shell() -> None:
@@ -217,11 +221,18 @@ def main() -> None:
         ("Eza (modern ls)", install_eza),
         ("Ccat (highlighted cat/less)", install_ccat),
         ("Advcpmv (cp/mv progress)", install_advcpmv),
-        ("Zsh plugins (syntax-highlighting, autosuggestions, p10k)", apply_zsh_plugins),
+        ("Zsh plugins", apply_zsh_plugins),
         ("Set zsh as default shell", set_default_shell),
     ]
-    for label, func in steps:
-        func()
+
+    from lib.ui import StepRunner
+
+    with StepRunner() as runner:
+        for label, func in steps:
+            runner.run(label, func)
+
+    console.print()
+    console.rule("[bold green]zsh setup complete[/]")
 
 
 if __name__ == "__main__":

@@ -19,17 +19,11 @@ import subprocess
 import sys
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+from lib.ui import info, warn, ok, run
 
 UNIT_NAME = "chezmoi-watch"
 SERVICE_DIR = Path.home() / ".config/systemd/user"
-
-
-def info(msg: str) -> None:
-    print(f"[INFO]  {msg}")
-
-
-def run(cmd: list[str], **kwargs) -> subprocess.CompletedProcess:
-    return subprocess.run(cmd, check=True, **kwargs)
 
 
 def get_managed_files() -> list[str]:
