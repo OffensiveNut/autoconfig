@@ -58,13 +58,67 @@ def is_installed(binary: str) -> bool:
     return shutil.which(binary) is not None
 
 
+def detect_gpu_vendor() -> str | None:
+    try:
+        result = subprocess.run(
+            ["lspci"], capture_output=True, text=True, timeout=10,
+        )
+        output = result.stdout.lower()
+        if "nvidia" in output:
+            return "nvidia"
+        if "amd" in output or "advanced micro devices" in output:
+            return "amd"
+        if "intel" in output:
+            return "intel"
+    except FileNotFoundError:
+        pass
+    return None
+
+
+VULKAN_DRIVERS: dict[str, list[str]] = {
+    "nvidia": ["lib32-nvidia-utils"],
+    "amd": ["lib32-vulkan-radeon"],
+    "intel": ["lib32-vulkan-intel"],
+}
+
+
+def pacman_install_one(pkg: str) -> bool:
+    result = subprocess.run(
+        ["sudo", "pacman", "-S", "--noconfirm", "--needed", pkg],
+        capture_output=True, text=True,
+    )
+    if result.returncode == 0:
+        return True
+    if "provider" in result.stderr.lower() or "provider" in result.stdout.lower():
+        warn(f"provider selection required for '{pkg}' — pre-installing vulkan driver")
+        gpu = detect_gpu_vendor()
+        if gpu:
+            for dep in VULKAN_DRIVERS.get(gpu, []):
+                subprocess.run(["sudo", "pacman", "-S", "--noconfirm", "--needed", dep],
+                               capture_output=True)
+        result2 = subprocess.run(
+            ["sudo", "pacman", "-S", "--noconfirm", "--needed", pkg],
+            capture_output=True, text=True,
+        )
+        return result2.returncode == 0
+    warn(f"failed to install '{pkg}': {result.stderr.strip() or result.stdout.strip()}")
+    return False
+
+
 def install_pacman(packages: list[str]) -> None:
-    missing = [p for p in packages if not is_installed(p)]
+    missing = [p for p in packages]
     if not missing:
-        info("all pacman packages already installed")
         return
-    info(f"installing {len(missing)} pacman packages")
-    run(["sudo", "pacman", "-S", "--noconfirm", "--needed", *missing])
+    info(f"installing {len(missing)} pacman packages (one at a time)")
+    failed = []
+    for pkg in missing:
+        if pacman_install_one(pkg):
+            info(f"  ✓ {pkg}")
+        else:
+            warn(f"  ✗ {pkg}")
+            failed.append(pkg)
+    if failed:
+        warn(f"failed to install: {' '.join(failed)}")
 
 
 def install_yay(packages: list[str]) -> None:
