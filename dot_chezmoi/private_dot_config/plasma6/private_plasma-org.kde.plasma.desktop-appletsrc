@@ -16,15 +16,15 @@ wallpaperplugin=org.kde.image
 
 [Containments][141][General]
 positions={"1536x864":[],"1920x1080":[],"1920x1200":[],"2327x1309":[],"480x819":[]}
-url=file://{{ .chezmoi.homeDir }}/Documents/desktopDoNotFill
+url=file://~/Documents/desktopDoNotFill
 
 [Containments][141][Wallpaper][luisbocanegra.smart.video.wallpaper.reborn][General]
 LastVideoPosition=11050
-VideoUrls=[{"filename":"file://{{ .chezmoi.homeDir }}/Pictures/wallpapers/liveWallpaper/imaginary-tree-honkai-impact-3rd-moewalls-com.mp4","enabled":false,"duration":0,"customDuration":0},{"filename":"file://{{ .chezmoi.sourceDir }}/assets/videos/livewallpaper.mp4","enabled":true,"duration":0,"customDuration":0}]
+VideoUrls=[{"filename":"file://~/Pictures/wallpapers/liveWallpaper/imaginary-tree-honkai-impact-3rd-moewalls-com.mp4","enabled":false,"duration":0,"customDuration":0},{"filename":"file://~/.local/share/autoconfig-assets/videos/livewallpaper.mp4","enabled":true,"duration":0,"customDuration":0}]
 
 [Containments][141][Wallpaper][org.kde.image][General]
-Image=file://{{ .chezmoi.sourceDir }}/assets/wallpapers/wallpaper.png
-SlidePaths={{ .chezmoi.homeDir }}/.local/share/wallpapers/,/usr/share/wallpapers/
+Image=file://~/.local/share/autoconfig-assets/wallpapers/wallpaper.png
+SlidePaths=~/.local/share/wallpapers/,/usr/share/wallpapers/
 
 [Containments][25]
 ItemGeometries-1344x840=Applet-127:448,176,640,160,0;
@@ -41,15 +41,15 @@ wallpaperplugin=org.kde.image
 
 [Containments][25][General]
 positions={"1536x864":[]}
-url=file://{{ .chezmoi.homeDir }}/Documents/desktopDoNotFill
+url=file://~/Documents/desktopDoNotFill
 
 [Containments][25][Wallpaper][luisbocanegra.smart.video.wallpaper.reborn][General]
 BlurMode=5
 LastVideoPosition=24608
-VideoUrls=[{"filename":"file://{{ .chezmoi.homeDir }}/Downloads/hoshimi-miyabi-zenless-zone-zero-moewalls-com.mp4","enabled":false,"duration":0,"customDuration":0},{"filename":"file://{{ .chezmoi.sourceDir }}/assets/videos/livewallpaper.mp4","enabled":true,"duration":0,"customDuration":0},{"filename":"file://{{ .chezmoi.homeDir }}/Pictures/wallpapers/liveWallpaper/sinon.mp4","enabled":false,"duration":0,"customDuration":0},{"filename":"file://{{ .chezmoi.homeDir }}/Pictures/wallpapers/liveWallpaper/imaginary-tree-honkai-impact-3rd-moewalls-com.mp4","enabled":false,"duration":0,"customDuration":0},{"filename":"file://{{ .chezmoi.homeDir }}/Pictures/wallpapers/liveWallpaper/the-dragon-slayer-sword-berserk-moewalls-com.mp4","enabled":false,"duration":0,"customDuration":0},{"filename":"file://{{ .chezmoi.homeDir }}/Pictures/wallpapers/liveWallpaper/Topaz.mp4","enabled":false,"duration":0,"customDuration":0},{"filename":"file://{{ .chezmoi.homeDir }}/Pictures/wallpapers/liveWallpaper/hoshimi-miyabi-zenless-zone-zero-moewalls-com.mp4","enabled":false,"duration":0,"customDuration":0}]
+VideoUrls=[{"filename":"file://~/Downloads/hoshimi-miyabi-zenless-zone-zero-moewalls-com.mp4","enabled":false,"duration":0,"customDuration":0},{"filename":"file://~/.local/share/autoconfig-assets/videos/livewallpaper.mp4","enabled":true,"duration":0,"customDuration":0},{"filename":"file://~/Pictures/wallpapers/liveWallpaper/sinon.mp4","enabled":false,"duration":0,"customDuration":0},{"filename":"file://~/Pictures/wallpapers/liveWallpaper/imaginary-tree-honkai-impact-3rd-moewalls-com.mp4","enabled":false,"duration":0,"customDuration":0},{"filename":"file://~/Pictures/wallpapers/liveWallpaper/the-dragon-slayer-sword-berserk-moewalls-com.mp4","enabled":false,"duration":0,"customDuration":0},{"filename":"file://~/Pictures/wallpapers/liveWallpaper/Topaz.mp4","enabled":false,"duration":0,"customDuration":0},{"filename":"file://~/Pictures/wallpapers/liveWallpaper/hoshimi-miyabi-zenless-zone-zero-moewalls-com.mp4","enabled":false,"duration":0,"customDuration":0}]
 
 [Containments][25][Wallpaper][org.kde.image][General]
-Image=file://{{ .chezmoi.sourceDir }}/assets/wallpapers/wallpaper.png
+Image=file://~/.local/share/autoconfig-assets/wallpapers/wallpaper.png
 SlidePaths=/usr/share/wallpapers/
 
 [Containments][66]
@@ -104,7 +104,7 @@ popupWidth=695
 [Containments][66][Applets][67][Configuration][General]
 appNameFormat=0
 favoritesPortedToKAstats=true
-icon={{ .chezmoi.sourceDir }}/assets/icons/icon.png
+icon=~/.local/share/autoconfig-assets/icons/icon.png
 systemFavorites=suspend\\,hibernate\\,reboot\\,shutdown
 
 [Containments][66][Applets][70]
