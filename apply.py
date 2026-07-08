@@ -56,27 +56,27 @@ def main() -> None:
         info("applying chezmoi dotfiles")
         subprocess.run(["chezmoi", "apply"], check=True)
 
-        # Strip ephemeral ConfigDialog sections and symlink plasma6 configs
-        plasma_dir = Path.home() / ".config/plasma6"
-        if plasma_dir.is_dir():
-            for f in plasma_dir.iterdir():
-                text = f.read_text().splitlines()
-                out = []
-                skip = False
-                for line in text:
-                    if line.startswith("[") and line.endswith("][ConfigDialog]"):
-                        skip = True
-                        continue
-                    if line.startswith("[") and not "ConfigDialog" in line:
-                        skip = False
-                    if not skip:
-                        out.append(line)
-                f.write_text("\n".join(out) + "\n")
-
-                target = Path.home() / ".config" / f.name
-                if not target.exists() and not target.is_symlink():
-                    target.symlink_to(f)
-                    info(f"linked ~/.config/plasma6/{f.name}")
+        # Strip ephemeral ConfigDialog sections from plasma6 configs
+        plasma_files = [
+            Path.home() / ".config" / f
+            for f in ("kwinrc", "plasmashellrc", "kglobalshortcutsrc",
+                      "kwinrulesrc", "plasma-org.kde.plasma.desktop-appletsrc")
+        ]
+        for f in plasma_files:
+            if not f.is_file():
+                continue
+            text = f.read_text().splitlines()
+            out = []
+            skip = False
+            for line in text:
+                if line.startswith("[") and line.endswith("][ConfigDialog]"):
+                    skip = True
+                    continue
+                if line.startswith("[") and not "ConfigDialog" in line:
+                    skip = False
+                if not skip:
+                    out.append(line)
+            f.write_text("\n".join(out) + "\n")
 
         # Symlink repo assets into home so configs can reference them
         assets_dir = Path("assets").resolve()

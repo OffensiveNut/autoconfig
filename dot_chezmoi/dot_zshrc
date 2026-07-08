@@ -76,7 +76,7 @@ bindkey '^H' backward-kill-word
 eval "$(zoxide init zsh)"
 alias cd="z"
 
-. "$HOME/.atuin/bin/env"
+# . "$HOME/.atuin/bin/env"
 
 eval "$(atuin init zsh)"
 
@@ -99,3 +99,4 @@ alias vim="nvim"
 alias update="mirrorupdate && sudo pacman -Syu --noconfirm && sudo paccache -rk1"
 alias update-aur="yay -Syu --noconfirm && sudo paccache -rk1"
 alias neofetch="fastfetch --config neofetch.jsonc"
+[ "$TERM" = "xterm-kitty" ] && alias ssh="kitty +kitten ssh"

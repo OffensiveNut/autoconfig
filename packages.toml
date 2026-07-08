@@ -12,7 +12,6 @@ packages = [
     "kitty",
     "btop",
     "zed",
-    "heroic",
     "distrobox",
     "bat",
     "mpv",
@@ -38,6 +37,7 @@ packages = [
     "ente-auth-bin",
     "namida-bin",
     "lrcget-bin",
+    "heroic-games-launcher-bin",
 ]
 
 [debian.apt]

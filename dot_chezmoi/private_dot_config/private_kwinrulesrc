@@ -63,8 +63,16 @@ wmclasscomplete=true
 wmclassmatch=1
 
 [General]
-count=14
-rules=f0aee975-57ce-4c4a-b8c3-8c0706fa7939,e13d2d9a-899d-400b-9b0c-8b4e40752103,860730ea-5c83-460a-a0ae-ef250c4b0cb9,103b9476-4807-421c-b4af-b62e15f9bce0,91a39678-355c-466f-9d61-5aa78472dccd,c53b7aeb-03a1-4255-a8e2-a409cdd8d66c,e76c2922-7dfa-4c47-8f3c-b4bf03e9532b,c1a0d8c6-2879-4570-b633-94f6bcfef67e,bc6e2c02-08b3-4d24-9509-0e9244ddfb70,4221ea5f-38c4-4082-b476-a8f93d28ef90,8c3dae39-a6c5-4191-9252-04a1c7a419df,3c99ad3a-1112-4315-8529-03c2cb35f8ed,62b541f1-fc83-47c8-b73d-47a3defa3bc8,87434fb6-60b4-4397-8314-f515da849193
+count=17
+rules=e89a8adb-c5a8-43bf-ab0f-7c1a30ab009a,f8787ac2-7b38-493e-9ee7-dcb85e847599,b51556f1-f54e-499f-8122-8126433f87d8,f0aee975-57ce-4c4a-b8c3-8c0706fa7939,e13d2d9a-899d-400b-9b0c-8b4e40752103,860730ea-5c83-460a-a0ae-ef250c4b0cb9,103b9476-4807-421c-b4af-b62e15f9bce0,91a39678-355c-466f-9d61-5aa78472dccd,c53b7aeb-03a1-4255-a8e2-a409cdd8d66c,e76c2922-7dfa-4c47-8f3c-b4bf03e9532b,c1a0d8c6-2879-4570-b633-94f6bcfef67e,bc6e2c02-08b3-4d24-9509-0e9244ddfb70,4221ea5f-38c4-4082-b476-a8f93d28ef90,8c3dae39-a6c5-4191-9252-04a1c7a419df,3c99ad3a-1112-4315-8529-03c2cb35f8ed,62b541f1-fc83-47c8-b73d-47a3defa3bc8,87434fb6-60b4-4397-8314-f515da849193
+
+[b51556f1-f54e-499f-8122-8126433f87d8]
+Description=Application settings for brave-origin
+desktops=01e5cae3-cc1b-4fa1-aa01-397a4539bf37
+desktopsrule=2
+wmclass=brave brave-origin
+wmclasscomplete=true
+wmclassmatch=1
 
 [bc6e2c02-08b3-4d24-9509-0e9244ddfb70]
 Description=Application settings for librewolf
@@ -103,10 +111,25 @@ desktopsrule=2
 wmclass=spotify
 wmclassmatch=1
 
+[e89a8adb-c5a8-43bf-ab0f-7c1a30ab009a]
+Description=Application settings for heroic
+desktops=c0b3ba5e-ea19-4a83-81c5-1dae8ac9a805
+desktopsrule=2
+wmclass=heroic
+wmclassmatch=1
+
 [f0aee975-57ce-4c4a-b8c3-8c0706fa7939]
 Description=Application settings for discord
 desktops=00d5c2ce-6041-4d11-a76a-a4d5b523e6e6
 desktopsrule=2
 wmclass=Discord discord
 wmclasscomplete=true
+wmclassmatch=1
+
+[f8787ac2-7b38-493e-9ee7-dcb85e847599]
+Description=Application settings for discord
+clientmachine=localhost
+desktops=00d5c2ce-6041-4d11-a76a-a4d5b523e6e6
+desktopsrule=2
+wmclass=discord
 wmclassmatch=1

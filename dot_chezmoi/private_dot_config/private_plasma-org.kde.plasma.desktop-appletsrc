@@ -5,33 +5,10 @@ RightButton;NoModifier=org.kde.contextmenu
 [ActionPlugins][1]
 RightButton;NoModifier=org.kde.contextmenu
 
-[Containments][141]
-activityId=0dce0701-a56b-49ce-86f7-2e6ed9a75694
-formfactor=0
-immutability=1
-lastScreen=1
-location=0
-plugin=org.kde.desktopcontainment
-wallpaperplugin=org.kde.image
-
-[Containments][141][General]
-positions={"1536x864":[],"1920x1080":[],"1920x1200":[],"2327x1309":[],"480x819":[]}
-url=file:///home/rasya/Documents/desktopDoNotFill
-
-[Containments][141][Wallpaper][luisbocanegra.smart.video.wallpaper.reborn][General]
-LastVideoPosition=11050
-VideoUrls=[{"filename":"file:///home/rasya/Pictures/wallpapers/liveWallpaper/imaginary-tree-honkai-impact-3rd-moewalls-com.mp4","enabled":false,"duration":0,"customDuration":0},{"filename":"file:///home/rasya/Pictures/wallpapers/liveWallpaper/Ryou-bokek.mp4","enabled":true,"duration":0,"customDuration":0}]
-
-[Containments][141][Wallpaper][org.kde.image][General]
-Image=file:///home/rasya/Pictures/wallpapers/konosuba.png
-SlidePaths=/home/rasya/.local/share/wallpapers/,/usr/share/wallpapers/
-
-[Containments][25]
-ItemGeometries-1344x840=Applet-127:448,176,640,160,0;
+[Containments][148]
 ItemGeometries-1536x864=
-ItemGeometries-1920x1080=
 ItemGeometriesHorizontal=
-activityId=0dce0701-a56b-49ce-86f7-2e6ed9a75694
+activityId=50ad16ab-5b00-43a1-8d2a-e3b32f6ca57a
 formfactor=0
 immutability=1
 lastScreen=0
@@ -39,16 +16,14 @@ location=0
 plugin=org.kde.plasma.folder
 wallpaperplugin=org.kde.image
 
-[Containments][25][General]
-positions={"1536x864":[]}
-url=file:///home/rasya/Documents/desktopDoNotFill
+[Containments][148][ConfigDialog]
+DialogHeight=630
+DialogWidth=810
 
-[Containments][25][Wallpaper][luisbocanegra.smart.video.wallpaper.reborn][General]
-BlurMode=5
-LastVideoPosition=24608
-VideoUrls=[{"filename":"file:///home/rasya/Downloads/hoshimi-miyabi-zenless-zone-zero-moewalls-com.mp4","enabled":false,"duration":0,"customDuration":0},{"filename":"file:///home/rasya/Pictures/wallpapers/liveWallpaper/Ryou-bokek.mp4","enabled":true,"duration":0,"customDuration":0},{"filename":"file:///home/rasya/Pictures/wallpapers/liveWallpaper/sinon.mp4","enabled":false,"duration":0,"customDuration":0},{"filename":"file:///home/rasya/Pictures/wallpapers/liveWallpaper/imaginary-tree-honkai-impact-3rd-moewalls-com.mp4","enabled":false,"duration":0,"customDuration":0},{"filename":"file:///home/rasya/Pictures/wallpapers/liveWallpaper/the-dragon-slayer-sword-berserk-moewalls-com.mp4","enabled":false,"duration":0,"customDuration":0},{"filename":"file:///home/rasya/Pictures/wallpapers/liveWallpaper/Topaz.mp4","enabled":false,"duration":0,"customDuration":0},{"filename":"file:///home/rasya/Pictures/wallpapers/liveWallpaper/hoshimi-miyabi-zenless-zone-zero-moewalls-com.mp4","enabled":false,"duration":0,"customDuration":0}]
+[Containments][148][General]
+url=file:///home/rasya/Documents/Desktop_DO_NOT_FILL/
 
-[Containments][25][Wallpaper][org.kde.image][General]
+[Containments][148][Wallpaper][org.kde.image][General]
 Image=file:///home/rasya/Pictures/wallpapers/konosuba.png
 SlidePaths=/usr/share/wallpapers/
 
@@ -69,6 +44,10 @@ plugin=org.kde.plasma.panelspacer
 immutability=1
 plugin=com.github.antroids.application-title-bar
 
+[Containments][66][Applets][124][Configuration]
+popupHeight=400
+popupWidth=560
+
 [Containments][66][Applets][124][Configuration][Appearance]
 overrideElementsMaximized=true
 widgetElements=windowTitle
@@ -83,15 +62,35 @@ plugin=org.kde.plasma.panelspacer
 immutability=1
 plugin=org.kde.plasma.marginsseparator
 
-[Containments][66][Applets][147]
+[Containments][66][Applets][149]
 immutability=1
-plugin=org.kde.plasma.pager
+plugin=com.github.tilorenz.compact_pager
 
-[Containments][66][Applets][147][Configuration][General]
-displayedText=Name
-showWindowIcons=true
-showWindowOutlines=false
-wrapPage=true
+[Containments][66][Applets][149][Configuration]
+popupHeight=400
+popupWidth=560
+
+[Containments][66][Applets][149][Configuration][Appearance]
+activeBgColor=164,164,164
+activeBgColorChecked=true
+borderColor=32,35,38
+displayBorder=false
+fontFamily=octicons
+fontSize=12
+fontSizeChecked=true
+inactiveBgColor=84,84,84
+inactiveBgColorChecked=true
+inactiveBgColorWithoutWindows=32,35,38
+inactiveBgColorWithoutWindowsChecked=true
+sameBorderColorAsFont=false
+
+[Containments][66][Applets][149][Configuration][ConfigDialog]
+DialogHeight=630
+DialogWidth=810
+
+[Containments][66][Applets][149][Configuration][General]
+forceLayout=Full
+showDesktopNames=true
 
 [Containments][66][Applets][67]
 immutability=1
@@ -101,10 +100,14 @@ plugin=org.kde.plasma.kickoff
 popupHeight=556
 popupWidth=695
 
+[Containments][66][Applets][67][Configuration][ConfigDialog]
+DialogHeight=630
+DialogWidth=810
+
 [Containments][66][Applets][67][Configuration][General]
 appNameFormat=0
 favoritesPortedToKAstats=true
-icon=/home/rasya/Documents/stuff/logodark.png
+icon=/home/rasya/Pictures/stuff/logodark.png
 systemFavorites=suspend\\,hibernate\\,reboot\\,shutdown
 
 [Containments][66][Applets][70]
@@ -209,9 +212,9 @@ immutability=1
 plugin=org.kde.plasma.bluetooth
 
 [Containments][66][Applets][71][General]
-extraItems=org.kde.plasma.printmanager,org.kde.plasma.vault,org.kde.plasma.networkmanagement,org.kde.kscreen,org.kde.plasma.notifications,org.kde.plasma.keyboardlayout,org.kde.plasma.brightness,org.kde.plasma.volume,org.kde.plasma.mediacontroller,org.kde.plasma.cameraindicator,org.kde.plasma.manage-inputmethod,org.kde.plasma.clipboard,org.kde.plasma.devicenotifier,org.kde.plasma.bluetooth,org.kde.plasma.keyboardindicator,org.kde.plasma.weather,org.kde.plasma.battery
+extraItems=org.kde.plasma.networkmanagement,org.kde.kscreen,org.kde.plasma.notifications,org.kde.plasma.keyboardlayout,org.kde.plasma.brightness,org.kde.plasma.volume,org.kde.plasma.mediacontroller,org.kde.plasma.cameraindicator,org.kde.plasma.manage-inputmethod,org.kde.plasma.clipboard,org.kde.plasma.devicenotifier,org.kde.plasma.bluetooth,org.kde.plasma.keyboardindicator,org.kde.plasma.weather,org.kde.plasma.battery,org.kde.kdeconnect
 hiddenItems=org.kde.plasma.keyboardlayout,Fcitx,org.kde.plasma.manage-inputmethod,org.kde.kdeconnect,org.kde.plasma.weather
-knownItems=org.kde.plasma.printmanager,org.kde.plasma.vault,org.kde.plasma.networkmanagement,org.kde.kscreen,org.kde.plasma.battery,org.kde.plasma.notifications,org.kde.plasma.keyboardlayout,org.kde.plasma.brightness,org.kde.plasma.volume,org.kde.plasma.mediacontroller,org.kde.plasma.cameraindicator,org.kde.plasma.manage-inputmethod,org.kde.plasma.clipboard,org.kde.plasma.devicenotifier,org.kde.plasma.bluetooth,org.kde.plasma.keyboardindicator,org.kde.plasma.weather
+knownItems=org.kde.plasma.networkmanagement,org.kde.kscreen,org.kde.plasma.battery,org.kde.plasma.notifications,org.kde.plasma.keyboardlayout,org.kde.plasma.brightness,org.kde.plasma.volume,org.kde.plasma.mediacontroller,org.kde.plasma.cameraindicator,org.kde.plasma.manage-inputmethod,org.kde.plasma.clipboard,org.kde.plasma.devicenotifier,org.kde.plasma.bluetooth,org.kde.plasma.keyboardindicator,org.kde.plasma.weather,org.kde.kdeconnect
 shownItems=org.kde.plasma.battery
 
 [Containments][66][Applets][88]
@@ -232,6 +235,10 @@ fontWeight=400
 immutability=1
 plugin=org.kde.netspeedWidget
 
+[Containments][66][Applets][89][Configuration]
+popupHeight=400
+popupWidth=560
+
 [Containments][66][Applets][89][Configuration][General]
 speedLayout=rows
 
@@ -243,7 +250,7 @@ plugin=org.kde.plasma.minimizeall
 global=Meta+D
 
 [Containments][66][General]
-AppletOrder=67;70;147;125;124;122;71;140;89;88;91
+AppletOrder=67;70;149;125;124;122;71;140;89;88;91
 
 [Containments][93]
 activityId=
@@ -265,5 +272,5 @@ launchers=
 AppletOrder=121
 
 [ScreenMapping]
-itemsOnDisabledScreens=1,0dce0701-a56b-49ce-86f7-2e6ed9a75694,1,desktop:/brave-hnpfjngllnobngcgfapefoaidbinmjnm-Default.desktop,0,0dce0701-a56b-49ce-86f7-2e6ed9a75694,2,desktop:/Zenless Zone Zero.lnk,desktop:/HoYoPlay.lnk
-screenMapping=desktop:/Zenless Zone Zero.desktop,0,0dce0701-a56b-49ce-86f7-2e6ed9a75694,desktop:/Zenless Zone Zero.lnk,0,0dce0701-a56b-49ce-86f7-2e6ed9a75694,desktop:/Bizagi Modeler.desktop,0,0dce0701-a56b-49ce-86f7-2e6ed9a75694,desktop:/HoYoPlay.lnk,0,0dce0701-a56b-49ce-86f7-2e6ed9a75694
+itemsOnDisabledScreens=0,50ad16ab-5b00-43a1-8d2a-e3b32f6ca57a,2,desktop:/HoYoPlay.lnk,desktop:/steam.desktop
+screenMapping=desktop:/Zenless Zone Zero.lnk,0,0dce0701-a56b-49ce-86f7-2e6ed9a75694,desktop:/HoYoPlay.lnk,0,0dce0701-a56b-49ce-86f7-2e6ed9a75694,desktop:/Zenless Zone Zero.desktop,0,0dce0701-a56b-49ce-86f7-2e6ed9a75694,desktop:/Bizagi Modeler.desktop,0,0dce0701-a56b-49ce-86f7-2e6ed9a75694
