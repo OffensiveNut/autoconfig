@@ -45,6 +45,17 @@ def pkg_install(cmd: str) -> list[str]:
     return []
 
 
+def add_dir_to_path(directory: Path) -> None:
+    """Idempotently add a directory to PATH in shell rc files if missing."""
+    directory = directory.resolve()
+    for rc in (Path.home() / ".zshrc", Path.home() / ".bashrc"):
+        if not rc.exists():
+            continue
+        text = rc.read_text()
+        if f"export PATH=\"{directory}:\"$PATH" not in text:
+            rc.write_text(text.rstrip() + f"\nexport PATH=\"{directory}:$PATH\"\n")
+
+
 def install_fonts() -> None:
     font_dir = Path.home() / ".local/share/fonts"
     fonts = {
@@ -97,27 +108,38 @@ def install_fonts() -> None:
     ok("fonts installed")
 
 
+ATUIN_BIN_DIR = Path.home() / ".atuin" / "bin"
+ATUIN_BIN = ATUIN_BIN_DIR / "atuin"
+
+
 def install_atuin() -> None:
-    if shutil.which("atuin"):
+    if shutil.which("atuin") or ATUIN_BIN.exists():
         ok("atuin already installed")
-        return
-    mgr = detect_pkg_manager()
-    if mgr == "pacman":
+    elif detect_pkg_manager() == "pacman":
         run(pkg_install("atuin"))
+        ok("atuin installed (pacman)")
     else:
-        run(
-            [
-                "curl",
-                "--proto",
-                "=https",
-                "--tlsv1.2",
-                "-LsSf",
-                "https://setup.atuin.sh",
-                "-o",
-                "/tmp/atuin.sh",
-            ]
-        )
-        run(["sh", "/tmp/atuin.sh"])
+        arch = subprocess.run(
+            ["uname", "-m"], capture_output=True, text=True
+        ).stdout.strip()
+        target = "x86_64-unknown-linux-gnu" if arch == "x86_64" else f"{arch}-unknown-linux-gnu"
+        url = f"https://github.com/atuinsh/atuin/releases/latest/download/atuin-{target}.tar.gz"
+        tmp = Path("/tmp/atuin")
+        tmp.mkdir(parents=True, exist_ok=True)
+        tarball = tmp / "atuin.tar.gz"
+        run(["curl", "-fsSL", "-o", str(tarball), url])
+        run(["tar", "-xzf", str(tarball), "-C", str(tmp)])
+        extracted = list(tmp.rglob("atuin"))
+        if not extracted:
+            warn("atuin binary not found in release archive")
+            return
+        ATUIN_BIN_DIR.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(extracted[0], ATUIN_BIN)
+        ATUIN_BIN.chmod(0o755)
+        ok(f"atuin installed to {ATUIN_BIN}")
+
+    # Ensure ~/.atuin/bin is on PATH (only the interactive setup.sh added it)
+    add_dir_to_path(ATUIN_BIN_DIR)
     ok("atuin installed")
 
 
