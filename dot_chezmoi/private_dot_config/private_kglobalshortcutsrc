@@ -335,12 +335,16 @@ PowerDown=Power Down,Power Down,Power Down
 PowerOff=Power Off,Power Off,Power Off
 Sleep=Sleep,Sleep,Suspend
 Toggle Keyboard Backlight=Keyboard Light On/Off,Keyboard Light On/Off,Toggle Keyboard Backlight
-Turn Off Screen=none,none,Turn Off Screen
+Turn Off Screen=Launch (2),none,Turn Off Screen
 _k_friendly_name=Power Management
 powerProfile=Battery\tMeta+B,Battery\tMeta+B,Switch Power Profile
 
 [plasmashell]
 Slideshow Wallpaper Next Image=none,none,Next Wallpaper Image
+Toggle Bigscreen Home Overlay=Meta+O,Meta+O,Toggle Bigscreen Home Overlay
+Toggle Bigscreen Home Screen=Home Page,Home Page,Toggle Bigscreen Home Screen
+Toggle Bigscreen Settings=Settings,Settings,Toggle Bigscreen Settings
+Toggle Bigscreen Tasks Overview=Menu,Menu,Toggle Bigscreen Tasks Overview
 _k_friendly_name=plasmashell
 activate application launcher=Meta\tAlt+F1,Meta\tAlt+F1,Activate Application Launcher
 activate task manager entry 1=none,Meta+1,Activate Task Manager Entry 1
@@ -353,6 +357,7 @@ activate task manager entry 6=none,Meta+6,Activate Task Manager Entry 6
 activate task manager entry 7=none,Meta+7,Activate Task Manager Entry 7
 activate task manager entry 8=Meta+8,Meta+8,Activate Task Manager Entry 8
 activate task manager entry 9=Meta+9,Meta+9,Activate Task Manager Entry 9
+activate widget 1=Meta+F1,none,Activate Plasma Bigscreen Homescreen Widget
 activate widget 64=none,none,Activate Minimize All Windows Widget
 activate widget 91=Meta+D,none,Activate Minimize All Windows Widget
 clear history=none,none,Clear Notification History
@@ -398,6 +403,8 @@ _launch=Meta+N
 _launch=Search\tAlt+Space\tAlt+F2\tMeta+R
 
 [services][org.kde.spectacle.desktop]
+CurrentMonitorScreenShot=none
+OpenWithoutScreenshot=none
 RecordRegion=Meta+Shift+R
 RecordWindow=none
 

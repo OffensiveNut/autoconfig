@@ -1,9 +1,9 @@
 MenuBar=Disabled
 
 [ExtractDialog]
-1536x864 screen: Height=480
+1536x864 screen: Height=510
 1536x864 screen: Width=1024
-DirHistory[$e]=/mnt/win10/Users/Rasya/Games/,$HOME/Games/cp2077/,$HOME/Documents/kicad/,$HOME/Documents/depthEstimation/nuwa/,$HOME/Games/Dead-Cells/,$HOME/Downloads/wiiu/
+DirHistory[$e]=$HOME/Games/,/mnt/win10/Users/Rasya/Games/,$HOME/Games/cp2077/,$HOME/Documents/kicad/,$HOME/Documents/depthEstimation/nuwa/,$HOME/Games/Dead-Cells/,$HOME/Downloads/wiiu/
 
 [General]
 Version=202

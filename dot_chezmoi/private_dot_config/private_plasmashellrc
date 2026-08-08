@@ -1,6 +1,26 @@
 [ActionsWidget]
 ColumnState=AAAA/wAAAAAAAAABAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAboAAAACAQAAAQAAAAAAAAAAAAAAAGT/////AAAAgQAAAAAAAAACAAAA+gAAAAEAAAAAAAAAwAAAAAEAAAAAAAAD6AAAAABkAAAAAAAAAAAAAAAAAAAAAQ==
 
+[Applets][1]
+activityId=50ad16ab-5b00-43a1-8d2a-e3b32f6ca57a
+formfactor=0
+immutability=1
+lastScreen=0
+location=0
+plugin=org.kde.bigscreen.homescreen
+wallpaperplugin=org.kde.slideshow
+
+[Applets][1][Configuration][General]
+coloredTiles=true
+
+[Applets][1][Shortcuts]
+global=Meta+F1
+
+[Applets][1][Wallpaper][org.kde.slideshow][General]
+Image=file:///usr/share/wallpapers/cachyos-wallpapers/Cachy_Topography2.jpg
+SlideInterval=480
+SlidePaths=/usr/share/wallpapers/
+
 [ConfigDialog]
 1536x864 screen: Height=550
 1536x864 screen: Width=723

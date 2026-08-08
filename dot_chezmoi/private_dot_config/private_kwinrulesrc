@@ -22,6 +22,14 @@ wmclass=brave brave-browser
 wmclasscomplete=true
 wmclassmatch=1
 
+[551f67cd-9002-4fca-930d-5e23482455d8]
+Description=Application settings for com.github.th-ch.youtube-music
+desktops=9d66636a-28c9-49c4-9ca9-b12a37d6aa99
+desktopsrule=2
+wmclass=youtube-music com.github.th-ch.youtube-music
+wmclasscomplete=true
+wmclassmatch=1
+
 [62b541f1-fc83-47c8-b73d-47a3defa3bc8]
 Description=Application settings for Spotify
 clientmachine=localhost
@@ -63,8 +71,8 @@ wmclasscomplete=true
 wmclassmatch=1
 
 [General]
-count=17
-rules=e89a8adb-c5a8-43bf-ab0f-7c1a30ab009a,f8787ac2-7b38-493e-9ee7-dcb85e847599,b51556f1-f54e-499f-8122-8126433f87d8,f0aee975-57ce-4c4a-b8c3-8c0706fa7939,e13d2d9a-899d-400b-9b0c-8b4e40752103,860730ea-5c83-460a-a0ae-ef250c4b0cb9,103b9476-4807-421c-b4af-b62e15f9bce0,91a39678-355c-466f-9d61-5aa78472dccd,c53b7aeb-03a1-4255-a8e2-a409cdd8d66c,e76c2922-7dfa-4c47-8f3c-b4bf03e9532b,c1a0d8c6-2879-4570-b633-94f6bcfef67e,bc6e2c02-08b3-4d24-9509-0e9244ddfb70,4221ea5f-38c4-4082-b476-a8f93d28ef90,8c3dae39-a6c5-4191-9252-04a1c7a419df,3c99ad3a-1112-4315-8529-03c2cb35f8ed,62b541f1-fc83-47c8-b73d-47a3defa3bc8,87434fb6-60b4-4397-8314-f515da849193
+count=18
+rules=551f67cd-9002-4fca-930d-5e23482455d8,e89a8adb-c5a8-43bf-ab0f-7c1a30ab009a,f8787ac2-7b38-493e-9ee7-dcb85e847599,b51556f1-f54e-499f-8122-8126433f87d8,f0aee975-57ce-4c4a-b8c3-8c0706fa7939,e13d2d9a-899d-400b-9b0c-8b4e40752103,860730ea-5c83-460a-a0ae-ef250c4b0cb9,103b9476-4807-421c-b4af-b62e15f9bce0,91a39678-355c-466f-9d61-5aa78472dccd,c53b7aeb-03a1-4255-a8e2-a409cdd8d66c,e76c2922-7dfa-4c47-8f3c-b4bf03e9532b,c1a0d8c6-2879-4570-b633-94f6bcfef67e,bc6e2c02-08b3-4d24-9509-0e9244ddfb70,4221ea5f-38c4-4082-b476-a8f93d28ef90,8c3dae39-a6c5-4191-9252-04a1c7a419df,3c99ad3a-1112-4315-8529-03c2cb35f8ed,62b541f1-fc83-47c8-b73d-47a3defa3bc8,87434fb6-60b4-4397-8314-f515da849193
 
 [b51556f1-f54e-499f-8122-8126433f87d8]
 Description=Application settings for brave-origin

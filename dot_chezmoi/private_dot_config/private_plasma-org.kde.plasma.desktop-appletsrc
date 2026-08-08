@@ -27,6 +27,15 @@ url=file:///home/rasya/Documents/Desktop_DO_NOT_FILL/
 Image=file:///home/rasya/Pictures/wallpapers/konosuba.png
 SlidePaths=/usr/share/wallpapers/
 
+[Containments][150]
+activityId=50ad16ab-5b00-43a1-8d2a-e3b32f6ca57a
+formfactor=0
+immutability=1
+lastScreen=1
+location=0
+plugin=org.kde.plasma.folder
+wallpaperplugin=org.kde.image
+
 [Containments][66]
 activityId=
 formfactor=2
@@ -167,6 +176,7 @@ immutability=1
 plugin=org.kde.plasma.volume
 
 [Containments][66][Applets][71][Applets][78][Configuration][General]
+currentTab=streams
 migrated=true
 
 [Containments][66][Applets][71][Applets][79]
@@ -212,9 +222,9 @@ immutability=1
 plugin=org.kde.plasma.bluetooth
 
 [Containments][66][Applets][71][General]
-extraItems=org.kde.plasma.networkmanagement,org.kde.kscreen,org.kde.plasma.notifications,org.kde.plasma.keyboardlayout,org.kde.plasma.brightness,org.kde.plasma.volume,org.kde.plasma.mediacontroller,org.kde.plasma.cameraindicator,org.kde.plasma.manage-inputmethod,org.kde.plasma.clipboard,org.kde.plasma.devicenotifier,org.kde.plasma.bluetooth,org.kde.plasma.keyboardindicator,org.kde.plasma.weather,org.kde.plasma.battery,org.kde.kdeconnect
+extraItems=org.kde.plasma.networkmanagement,org.kde.kscreen,org.kde.plasma.notifications,org.kde.plasma.keyboardlayout,org.kde.plasma.brightness,org.kde.plasma.volume,org.kde.plasma.mediacontroller,org.kde.plasma.cameraindicator,org.kde.plasma.manage-inputmethod,org.kde.plasma.clipboard,org.kde.plasma.devicenotifier,org.kde.plasma.bluetooth,org.kde.plasma.keyboardindicator,org.kde.plasma.weather,org.kde.plasma.battery
 hiddenItems=org.kde.plasma.keyboardlayout,Fcitx,org.kde.plasma.manage-inputmethod,org.kde.kdeconnect,org.kde.plasma.weather
-knownItems=org.kde.plasma.networkmanagement,org.kde.kscreen,org.kde.plasma.battery,org.kde.plasma.notifications,org.kde.plasma.keyboardlayout,org.kde.plasma.brightness,org.kde.plasma.volume,org.kde.plasma.mediacontroller,org.kde.plasma.cameraindicator,org.kde.plasma.manage-inputmethod,org.kde.plasma.clipboard,org.kde.plasma.devicenotifier,org.kde.plasma.bluetooth,org.kde.plasma.keyboardindicator,org.kde.plasma.weather,org.kde.kdeconnect
+knownItems=org.kde.plasma.networkmanagement,org.kde.kscreen,org.kde.plasma.battery,org.kde.plasma.notifications,org.kde.plasma.keyboardlayout,org.kde.plasma.brightness,org.kde.plasma.volume,org.kde.plasma.mediacontroller,org.kde.plasma.cameraindicator,org.kde.plasma.manage-inputmethod,org.kde.plasma.clipboard,org.kde.plasma.devicenotifier,org.kde.plasma.bluetooth,org.kde.plasma.keyboardindicator,org.kde.plasma.weather
 shownItems=org.kde.plasma.battery
 
 [Containments][66][Applets][88]
@@ -230,6 +240,10 @@ dateFormat=isoDate
 enabledCalendarPlugins=holidaysevents,astronomicalevents,alternatecalendar,pimevents
 fontFamily=Fira Code
 fontWeight=400
+
+[Containments][66][Applets][88][Configuration][ConfigDialog]
+DialogHeight=630
+DialogWidth=810
 
 [Containments][66][Applets][89]
 immutability=1
@@ -272,5 +286,5 @@ launchers=
 AppletOrder=121
 
 [ScreenMapping]
-itemsOnDisabledScreens=0,50ad16ab-5b00-43a1-8d2a-e3b32f6ca57a,2,desktop:/HoYoPlay.lnk,desktop:/steam.desktop
-screenMapping=desktop:/Zenless Zone Zero.lnk,0,0dce0701-a56b-49ce-86f7-2e6ed9a75694,desktop:/HoYoPlay.lnk,0,0dce0701-a56b-49ce-86f7-2e6ed9a75694,desktop:/Zenless Zone Zero.desktop,0,0dce0701-a56b-49ce-86f7-2e6ed9a75694,desktop:/Bizagi Modeler.desktop,0,0dce0701-a56b-49ce-86f7-2e6ed9a75694
+itemsOnDisabledScreens=0,50ad16ab-5b00-43a1-8d2a-e3b32f6ca57a,2,desktop:/steam.desktop,desktop:/HoYoPlay.lnk
+screenMapping=desktop:/Bizagi Modeler.desktop,0,0dce0701-a56b-49ce-86f7-2e6ed9a75694,desktop:/Zenless Zone Zero.desktop,0,0dce0701-a56b-49ce-86f7-2e6ed9a75694,desktop:/HoYoPlay.lnk,0,0dce0701-a56b-49ce-86f7-2e6ed9a75694,desktop:/Zenless Zone Zero.lnk,0,0dce0701-a56b-49ce-86f7-2e6ed9a75694
